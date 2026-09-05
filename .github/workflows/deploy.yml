@@ -1,6 +1,5 @@
-name: Deploy to Production
+name: Deploy Japanese Academy to Production
 
-# تحديد متى يتم تشغيل هذا الـ Workflow (عند الدفع لفرع main)
 on:
   push:
     branches:
@@ -21,23 +20,21 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          # الأوامر التي سيتم تنفيذها داخل الخادم تلقائياً
           script: |
-            # 1. انتقل إلى مسار المشروع على الخادم (تأكد أن المجلد اسمه Silk فعلاً)
-            cd ~/Silk || cd /var/www/Silk
+            # 1. الانتقال إلى مسار المشروع على الخادم
+            cd /var/www/japanese-academy
             
-            # 2. جلب أحدث التعديلات البرمجية من GitHub
+            # 2. جلب أحدث التعديلات البرمجية من مستودع GitHub
             git pull origin main
-            # docker compose down -v
-            # 3. إعادة بناء الحاويات وتشغيلها (استخدام المعيار الحديث docker compose بدون خط بين الكلمتين)
+            
+            # 3. إعادة بناء الحاويات وتطبيق التحديثات
             docker compose up -d --build
             
-            # 4. تنفيذ هجرات قاعدة البيانات وتنظيف الكاش للـ Laravel (تم تفعيلها وتعديل اسم الحاوية إلى backend)
-            docker compose exec -T backend php artisan migrate --force
-            # docker compose exec -T backend php artisan migrate:fresh --seed --force
-            docker compose exec -T backend php artisan config:cache
-            docker compose exec -T backend php artisan route:cache
-            docker compose exec -T backend php artisan view:cache
+            # 4. تنفيذ أوامر Laravel داخل حاوية الخلفية الجديدة (ja_backend)
+            docker compose exec -T ja_backend php artisan migrate --force
+            docker compose exec -T ja_backend php artisan config:cache
+            docker compose exec -T ja_backend php artisan route:cache
+            docker compose exec -T ja_backend php artisan view:cache
             
-            # 5. تنظيف مخلفات الصور القديمة لتوفير مساحة السيرفر (مهمة جداً في دوكر لكي لا تمتلئ الذاكرة)
+            # 5. تنظيف الصور القديمة لتوفير المساحة
             docker image prune -f
