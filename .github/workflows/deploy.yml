@@ -1,0 +1,43 @@
+name: Deploy to Production
+
+# تحديد متى يتم تشغيل هذا الـ Workflow (عند الدفع لفرع main)
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          # الأوامر التي سيتم تنفيذها داخل الخادم تلقائياً
+          script: |
+            # 1. انتقل إلى مسار المشروع على الخادم (تأكد أن المجلد اسمه Silk فعلاً)
+            cd ~/Silk || cd /var/www/Silk
+            
+            # 2. جلب أحدث التعديلات البرمجية من GitHub
+            git pull origin main
+            # docker compose down -v
+            # 3. إعادة بناء الحاويات وتشغيلها (استخدام المعيار الحديث docker compose بدون خط بين الكلمتين)
+            docker compose up -d --build
+            
+            # 4. تنفيذ هجرات قاعدة البيانات وتنظيف الكاش للـ Laravel (تم تفعيلها وتعديل اسم الحاوية إلى backend)
+            docker compose exec -T backend php artisan migrate --force
+            # docker compose exec -T backend php artisan migrate:fresh --seed --force
+            docker compose exec -T backend php artisan config:cache
+            docker compose exec -T backend php artisan route:cache
+            docker compose exec -T backend php artisan view:cache
+            
+            # 5. تنظيف مخلفات الصور القديمة لتوفير مساحة السيرفر (مهمة جداً في دوكر لكي لا تمتلئ الذاكرة)
+            docker image prune -f

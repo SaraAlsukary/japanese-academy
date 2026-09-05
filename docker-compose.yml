@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # 1️⃣ واجهة العملاء
+  ja_frontend:
+    container_name: ja_frontend
+    build: ./front
+    restart: unless-stopped
+    networks:
+      - proxy_network
+
+  # 2️⃣ واجهة لوحة التحكم
+  ja_dashboard:
+    container_name: ja_dashboard
+    build: ./dashboard
+    restart: unless-stopped
+    networks:
+      - proxy_network
+
+  # 3️⃣ خلفية المشروع (API)
+  ja_backend:
+    container_name: ja_backend
+    build: ./back
+    restart: unless-stopped
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - DB_CONNECTION=mysql
+      - DB_HOST=ja_db
+      - DB_PORT=3306
+      - DB_DATABASE=japanese_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=japanese_root_pass
+    depends_on:
+      - ja_db
+    networks:
+      - default
+      - proxy_network
+
+  # 4️⃣ قاعدة البيانات
+  ja_db:
+    container_name: ja_db
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: japanese_db
+      MYSQL_ROOT_PASSWORD: japanese_root_pass
+    volumes:
+      - ja_db_data:/var/lib/mysql
+    networks:
+      - default
+
+  # 5️⃣ إدارة قواعد البيانات phpMyAdmin
+  ja_phpmyadmin:
+    container_name: ja_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: ja_db
+      MYSQL_ROOT_PASSWORD: japanese_root_pass
+    depends_on:
+      - ja_db
+    networks:
+      - default
+      - proxy_network
+
+volumes:
+  ja_db_data: # اسم فريد لمنع اختلاط البيانات بمشروع Silk
+
+networks:
+  default:
+  proxy_network:
+    external: true
+    name: global-proxy_default # نفس شبكة الموجه الموجودة مسبقاً
