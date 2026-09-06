@@ -31,7 +31,7 @@ export default function Navbar() {
   // --- مكون مخصص لأزرار الدخول والتسجيل باللون الأحمر للهوية البصرية ---
   const RedNavButton = ({ children }: { children: React.ReactNode }) => (
     <button
-      className="relative flex items-center justify-center px-4 py-2 m-1 min-[330px]:w-28 md:w-32 xl:w-44 text-sm md:text-base xl:text-xl font-bold text-white bg-brand-red border-2 border-brand-red rounded-xl shadow-sm cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-brand-red hover:shadow-md"
+      className="relative flex items-center justify-center px-4 py-2 m-1 min-[330px]:w-20 md:w-32 xl:w-44 text-sm md:text-base xl:text-xl font-bold text-white bg-brand-red border-2 border-brand-red rounded-xl shadow-sm cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-brand-red hover:shadow-md"
     >
       {children}
     </button>
@@ -67,7 +67,7 @@ export default function Navbar() {
       </button>
 
       {/* 2. أزرار التحكم - نسخة الجوال */}
-      <div className="flex xl:hidden items-center justify-end w-auto min-[330px]:w-[265px]">
+      <div className="flex xl:hidden items-center justify-center w-auto min-[330px]:w-[200px]">
         {/* أزرار التسجيل والدخول مفعلة */}
         <div className="flex gap-1">
           <Link to="/Login_users"><RedNavButton>دخول</RedNavButton></Link>
@@ -125,7 +125,7 @@ export default function Navbar() {
         </ul>
 
       </div>
-      <Link to="/" className="cursor-default">
+      <Link to="/" className={`${isOpen ? "cursor-default mx-auto" : "cursor-default"}`}>
         <img
           src={'/logo.png'}
           alt="الشعار"

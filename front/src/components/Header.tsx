@@ -47,7 +47,7 @@ export default function Header() {
         <div className="absolute top-1/2 left-0 w-[30rem] h-[30rem] bg-brand-gold/15 rounded-full blur-3xl -z-10 -translate-x-1/2"></div>
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-brand-red/5 rounded-full blur-3xl -z-10 translate-y-1/2"></div>
 
-        <div className="max-w-[1440px] mx-auto px-4 md:px-8 xl:px-[90px]">
+        <div className=" mx-auto px-4 md:px-8 xl:px-[90px]">
 
           {/* قسم التعريف بالأكاديمية */}
           <motion.div
