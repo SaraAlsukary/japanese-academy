@@ -46,7 +46,7 @@ export default function ComingSoon() {
 
             {/* الفوتر السكلي */}
             <footer className="w-full max-w-6xl text-center z-10 pt-6 border-t border-white/10">
-                <p className="text-lg md:text-xl font-extrabold text-gray-400">
+                <p className="text-md md:text-xl font-extrabold text-gray-400">
                     جميع الحقوق محفوظة © {new Date().getFullYear()} لأكاديمية اللغة اليابانية
                 </p>
             </footer>
