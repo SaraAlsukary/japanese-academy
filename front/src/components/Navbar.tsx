@@ -42,7 +42,7 @@ export default function Navbar() {
     <li className="w-full xl:w-auto xl:border-none border-b border-gray-300 py-2.5 xl:py-0">
       <Link
         to={to}
-        className="flex items-center text-right xl:text-center text-lg xl:text-xl font-bold text-brand-black hover:text-brand-gold transition-colors w-full px-3"
+        className="flex items-center text-right xl:text-center text-lg xl:text-2xl font-bold text-brand-black hover:text-brand-gold transition-colors w-full px-3"
       >
         <Icon className="mx-2 text-brand-red text-xl xl:text-2xl" />
         {text}
@@ -108,14 +108,14 @@ export default function Navbar() {
 
         {/* روابط الأقسام - تم زيادة المسافات (gap) وتكبير الخط */}
         <ul className="flex flex-col xl:flex-row xl:flex-wrap items-center justify-center xl:gap-6 w-full bg-gray-50 xl:bg-transparent mt-3 xl:mt-0 p-2 xl:p-0 rounded-lg xl:rounded-none">
-          <div className="flex flex-col xl:flex-row flex-wrap items-center justify-center text-center w-full xl:w-auto xl:gap-4">
+          <div className="flex flex-col xl:flex-row flex-wrap items-center justify-center text-center w-full xl:w-auto xl:gap-0">
             <NavLinkItem to="/" icon={FaHome} text="الصفحة الرئيسية" />
             <NavLinkItem to="/Teachers" icon={FaUserGroup} text="الهيئة التدريسية" />
             <NavLinkItem to="/Level_division" icon={MdLibraryBooks} text="المستويات الدراسية" />
             <NavLinkItem to="/Study_materials" icon={FaBook} text="المواد الدراسية" />
           </div>
 
-          <div className="flex flex-col xl:flex-row flex-wrap items-center justify-center text-center w-full xl:w-auto xl:gap-4">
+          <div className="flex flex-col xl:flex-row flex-wrap items-center justify-center text-center w-full xl:w-auto xl:gap-0">
             <NavLinkItem to="/Fees" icon={BsCashCoin} text="الرسوم الدراسية" />
             <NavLinkItem to="/Questions" icon={FaQuestionCircle} text="الأسئلة الشائعة" />
             <NavLinkItem to="/Comments" icon={FaCommentAlt} text="آراء الطلاب" />

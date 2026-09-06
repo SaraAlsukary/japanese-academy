@@ -6,6 +6,7 @@ import { lazy } from "react";
 // const Dash = lazy(() => import("../pages/Dash/Dash.tsx"));
 // const Date_lisson = lazy(() => import("../pages/Date_lisson/Date_lisson.tsx"));
 const Home = lazy(() => import("../pages/Home.tsx")); // تم رفع التعليق هنا لأنك تستخدمه في الأسفل
+const ComingSoon = lazy(() => import("../pages/ComingSoon.tsx")); // تم رفع التعليق هنا لأنك تستخدمه في الأسفل
 // const Login = lazy(() => import("../pages/Login/Login.tsx"));
 // const Questions = lazy(() => import("../pages/Questions/Questions.tsx"));
 // const Articles = lazy(() => import("../pages/Articles/Articles.tsx"));
@@ -52,9 +53,13 @@ export default function AppRouter() {
     ========================= */
 
     const router = createBrowserRouter([
-        /* ================= PUBLIC ================= */
         {
             path: "/",
+            element: <ComingSoon />
+        },
+        /* ================= PUBLIC ================= */
+        {
+            path: "/home",
             element: <UserLayout />,
             children: [
                 {

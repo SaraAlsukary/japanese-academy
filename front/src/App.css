@@ -1,0 +1,40 @@
+body {
+    background: #fdfdfd;
+}
+
+
+/* شريط التمرير بالهوية البصرية */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-brand-red);
+    border-radius: 6px;
+    border: 2px solid var(--color-brand-gold);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #6e1014;
+}
+
+/* انيميشنات التحريك العام */
+.left {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateX(-4%);
+    transition: all 1s;
+}
+
+.right {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateX(4%);
+    transition: all 1s;
+}
+
+.show {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+}

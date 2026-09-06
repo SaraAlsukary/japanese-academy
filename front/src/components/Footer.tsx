@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 export default function Footer() {
   // متغيرات مجمعة لتسهيل قراءة الكود وتقليل التكرار
   const linkClass = "flex items-center text-black text-[20px] font-bold leading-[2.5] hover:text-[#2a0303] transition-colors";
-  const iconClass = "ml-2.5 text-red-600 text-[20px]"; 
+  const iconClass = "ml-2.5 text-red-600 text-[20px]";
   const contactListClass = "mb-2 text-black font-bold text-[20px] hover:opacity-80 transition-opacity flex items-center gap-2";
 
   return (
@@ -20,9 +20,9 @@ export default function Footer() {
           <div className="mt-5 max-[877px]:mt-0">
             {/* المحتوى الرئيسي للفوتر */}
             <div className="flex flex-wrap min-[878px]:flex-row max-[877px]:flex-col-reverse justify-between text-start gap-[30px]">
-              
+
               <div className="flex flex-col md:flex-row flex-wrap justify-between flex-1 w-full">
-                
+
                 {/* قسم التواصل */}
                 <div className="pl-[30px] max-[877px]:pl-0">
                   <ul className="list-none leading-loose text-start m-0 p-0">
@@ -55,7 +55,7 @@ export default function Footer() {
                       </a>
                     </li>
                   </ul>
-                  
+
                   {/* أيقونات التواصل الاجتماعي */}
                   <div className="flex items-center gap-4 mt-4">
                     <a href="" className="text-[#2a0303] hover:opacity-80"><FaFacebook className="text-2xl" /></a>
@@ -67,7 +67,7 @@ export default function Footer() {
 
                 {/* قسم الروابط مقسم لـ 3 مجموعات */}
                 <div className="flex flex-wrap justify-between gap-[30px] max-[877px]:border-t-2 max-[877px]:border-[#2a0303] max-[877px]:mt-5 max-[877px]:pt-5 max-[551px]:gap-x-0.5 max-[551px]:gap-y-0 w-full min-[878px]:w-auto flex-1 min-[878px]:mr-8">
-                  
+
                   <ul className="list-none p-0 m-0">
                     <li><Link className={linkClass} to="/"><FaHome className={iconClass} /> الصفحة الرئيسية</Link></li>
                     <li><Link className={linkClass} to="/Level_division"><MdLibraryBooks className={iconClass} /> المستويات الدراسية</Link></li>
@@ -106,7 +106,7 @@ export default function Footer() {
           <ul className="p-0 m-0 flex flex-wrap justify-center items-center gap-4 max-[650px]:justify-evenly list-none">
             <li>
               <span className="text-white text-[15px]">
-                Copyright © {new Date().getFullYear()} Japanese Academy. All Rights Reserved
+                جميع الحقوق محفوظة © {new Date().getFullYear()} لأكاديمية اللغة اليابانية
               </span>
             </li>
             <li className="hidden max-[650px]:block">
