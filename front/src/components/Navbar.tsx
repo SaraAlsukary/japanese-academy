@@ -52,10 +52,10 @@ export default function Navbar() {
 
   return (
     <nav dir="rtl" className="max-w-full mx-auto px-3 xl:px-[90px] py-3 flex flex-wrap items-center justify-between">
-      {/* 1. الشعار (Logo) - تم تكبيره قليلاً ليتناسب مع النصوص */}
-      {/* 3. زر التبديل (Hamburger Menu) - تم تكبيره للموبايل */}
+      
+      {/* 1. زر التبديل (Hamburger Menu) - الموضع الأول في الموبايل */}
       <button
-        className="xl:hidden flex items-center justify-center w-10 h-10 relative focus:outline-none ml-1"
+        className="xl:hidden flex items-center justify-center w-10 h-10 relative focus:outline-none ml-1 cursor-pointer order-1"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle navigation"
       >
@@ -67,7 +67,7 @@ export default function Navbar() {
       </button>
 
       {/* 2. أزرار التحكم - نسخة الجوال */}
-      <div className="flex xl:hidden items-center justify-center w-auto min-[330px]:w-[200px]">
+      <div className="flex xl:hidden items-center justify-center w-auto min-[330px]:w-[200px] order-2">
         {/* أزرار التسجيل والدخول مفعلة */}
         <div className="flex gap-1">
           <Link to="/Login_users"><RedNavButton>دخول</RedNavButton></Link>
@@ -77,61 +77,62 @@ export default function Navbar() {
         {/* الأزرار التي تحتاج تسجيل دخول (معلقة) */}
         {/*
           <div className="flex items-center gap-1">
-             ... أزرار لوحة التحكم وتسجيل الخروج ...
+              ... أزرار لوحة التحكم وتسجيل الخروج ...
           </div>
         */}
       </div>
 
-
-
-      {/* 4. القائمة المنسدلة (الروابط والأزرار للشاشات الكبيرة) */}
-      <div
-        className={`w-full xl:w-auto xl:flex-1 xl:flex xl:items-center xl:justify-between overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-[800px] opacity-100 mt-4 block" : "max-h-0 opacity-0 xl:max-h-none xl:opacity-100 xl:mt-0 hidden xl:flex"
-          }`}
-      >
-        {/* أزرار التحكم - نسخة سطح المكتب */}
-        <div className="hidden xl:flex items-center justify-end ml-4">
-
-          {/* أزرار التسجيل والدخول مفعلة */}
-
-          <div className=" flex flex-col gap-3">
-            <Link to="/Register_account"><RedNavButton>سجل الآن</RedNavButton></Link>
-            <Link to="/Login_users"><RedNavButton>تسجيل الدخول</RedNavButton></Link>
-          </div>
-          {/* الأزرار التي تحتاج تسجيل دخول (معلقة) */}
-          {/*
-            <div className="flex items-center gap-2">
-               ... أزرار لوحة التحكم وتسجيل الخروج ...
-            </div>
-          */}
-        </div>
-
-        {/* روابط الأقسام - تم زيادة المسافات (gap) وتكبير الخط */}
-        <ul className="flex flex-col xl:flex-row xl:flex-wrap items-center justify-center xl:gap-6 w-full bg-gray-50 xl:bg-transparent mt-3 xl:mt-0 p-2 xl:p-0 rounded-lg xl:rounded-none">
-          <div className="flex flex-col xl:flex-row flex-wrap items-center justify-center text-center w-full xl:w-auto xl:gap-0">
-            <NavLinkItem to="/" icon={FaHome} text="الصفحة الرئيسية" />
-            <NavLinkItem to="/Teachers" icon={FaUserGroup} text="الهيئة التدريسية" />
-            <NavLinkItem to="/Level_division" icon={MdLibraryBooks} text="المستويات الدراسية" />
-            <NavLinkItem to="/Study_materials" icon={FaBook} text="المواد الدراسية" />
-          </div>
-
-          <div className="flex flex-col xl:flex-row flex-wrap items-center justify-center text-center w-full xl:w-auto xl:gap-0">
-            <NavLinkItem to="/Fees" icon={BsCashCoin} text="الرسوم الدراسية" />
-            <NavLinkItem to="/Questions" icon={FaQuestionCircle} text="الأسئلة الشائعة" />
-            <NavLinkItem to="/Comments" icon={FaCommentAlt} text="آراء الطلاب" />
-            <NavLinkItem to="/More_services" icon={GrMoreVertical} text="خدمات إضافية" />
-            <NavLinkItem to="/Support" icon={FaMicrophoneLines} text="الدعم الفني" />
-          </div>
-        </ul>
-
-      </div>
-      <Link to="/" className={`${isOpen ? "cursor-default mx-auto" : "cursor-default"}`}>
+      {/* 3. الشعار (Logo) - يثبت في السطر العلوي للموبايل ولا ينزل لأسفل */}
+      <Link to="/home" className="cursor-default order-3 xl:order-3">
         <img
           src={'/logo.png'}
           alt="الشعار"
           className="w-14 min-[330px]:w-16 md:w-40 xl:w-40 bg-white rounded-full mt-1 xl:mt-0 shadow-sm"
         />
       </Link>
+
+      {/* 4. القائمة المنسدلة (تفتح تحت الشريط العلوي بأنميشن انسيابي) */}
+      <div
+        className={`w-full xl:w-auto xl:flex-1 xl:flex xl:items-center xl:justify-between overflow-hidden transition-all duration-500 ease-in-out order-4 xl:order-2 ${
+          isOpen 
+            ? "max-h-[800px] opacity-100 mt-4" 
+            : "max-h-0 opacity-0 xl:max-h-none xl:opacity-100 xl:mt-0"
+        }`}
+      >
+        {/* أزرار التحكم - نسخة سطح المكتب */}
+        <div className="hidden xl:flex items-center justify-end ml-4">
+          {/* أزرار التسجيل والدخول مفعلة */}
+          <div className="flex flex-col gap-3">
+            <Link to="/Register_account"><RedNavButton>سجل الآن</RedNavButton></Link>
+            <Link to="/Login_users"><RedNavButton>تسجيل الدخول</RedNavButton></Link>
+          </div>
+          {/* الأزرار التي تحتاج تسجيل دخول (معلقة) */}
+          {/*
+            <div className="flex items-center gap-2">
+                ... أزرار لوحة التحكم وتسجيل الخروج ...
+            </div>
+          */}
+        </div>
+
+        {/* روابط الأقسام - التصميم والرموز والألوان الأصلية 100% */}
+        <ul className="flex flex-col xl:flex-row xl:flex-wrap items-center justify-center xl:gap-6 w-full bg-gray-50 xl:bg-transparent mt-3 xl:mt-0 p-2 xl:p-0 rounded-lg xl:rounded-none">
+          <div className="flex flex-col xl:flex-row flex-wrap items-center justify-center text-center w-full xl:w-auto xl:gap-0">
+            <NavLinkItem to="/home" icon={FaHome} text="الصفحة الرئيسية" />
+            <NavLinkItem to="Teachers" icon={FaUserGroup} text="الهيئة التدريسية" />
+            <NavLinkItem to="Level_division" icon={MdLibraryBooks} text="المستويات الدراسية" />
+            <NavLinkItem to="Study_materials" icon={FaBook} text="المواد الدراسية" />
+          </div>
+
+          <div className="flex flex-col xl:flex-row flex-wrap items-center justify-center text-center w-full xl:w-auto xl:gap-0">
+            <NavLinkItem to="Fees" icon={BsCashCoin} text="الرسوم الدراسية" />
+            <NavLinkItem to="Questions" icon={FaQuestionCircle} text="الأسئلة الشائعة" />
+            <NavLinkItem to="Comments" icon={FaCommentAlt} text="آراء الطلاب" />
+            <NavLinkItem to="More_services" icon={GrMoreVertical} text="خدمات إضافية" />
+            <NavLinkItem to="Support" icon={FaMicrophoneLines} text="الدعم الفني" />
+          </div>
+        </ul>
+
+      </div>
     </nav>
   );
 }
