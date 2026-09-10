@@ -3,13 +3,40 @@ import Teacher_2 from "../assets/Teacher/photo_2024-10-30_14-24-02.webp";
 import Teacher_3 from "../assets/Teacher/photo_2024-11-03_14-14-22.webp";
 import Our_Teachers_img from "../assets/Teacher/_d0260767-0c90-4923-9381-3f0fb9b206d2.webp";
 import ReadMore from "../components/ReadMore";
+import { motion, type Variants } from "framer-motion";
 
 export default function Teachers() {
+// 1. أضف : Variants هنا
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+// 2. أضف : Variants هنا
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" } 
+  },
+};
   return (
-    <section className="px-3 xl:px-[90px] my-10 text-brand-black" id="Teachers" dir="rtl">
+   <section className="px-3 xl:px-[90px] my-10 text-brand-black overflow-hidden" id="Teachers" dir="rtl">
       
       {/* القسم التعريفي العلوي */}
-      <div className="mb-8 ">
+      <motion.div 
+        className="mb-8"
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8 }}
+      >
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-4">
           أعضاء الهيئة التدريسية
         </h2>
@@ -17,26 +44,36 @@ export default function Teachers() {
           <ReadMore maxWords={190}>
             مزيج من الخبرة والمعرفة العميقة باللغتين والثقافتين العربية واليابانية…
             نفتخر في أكاديمية اللغة اليابانية بفريق متميز من المدرسين الذين يجمعون بين الخبرة والمعرفة العميقة في اللغة والثقافة اليابانية والعربية على حد السواء. ويتكون فريق المدرسين من مجموعة متنوعة من الأساتذة، تشمل مدرّسين يابانيين يتحدثون اللغة العربية بطلاقة، مما يتيح لطلابنا تجربة تعليمية فريدة وشاملة.
-            
             يتمتع المدرسون في أكاديمية اللغة اليابانية بخلفيات أكاديمية قوية وتجارب غنية في تدريس اللغة اليابانية للناطقين بالعربية. ويتميزون بفهم عميق للثقافتين اليابانية والعربية، مما يساعدهم في تعليم اللغة اليابانية ونقل الثقافة اليابانية لطلاب الأكاديمية بطريقة تفاعلية وممتعة. وبفضل معرفتهم المتعمقة بالاختلافات بين اللغتين العربية واليابانية، فإنهم يستطيعون تقديم شروحات تناسب احتياجات الطلاب وتساعدهم على تخطي التحديات والصعوبات اللغوية الناتجة عن الاختلافات الهيكلية بين اللغة الأم واللغة اليابانية. ويستخدم فريق التدريس أساليب تدريس مبتكرة تشمل الأنشطة التفاعلية ووسائل التعليم الحديثة، مما يسهم في خلق بيئة تعليمية محفزة. ويقومون بتقديم تعليم متميز يشجع على الاستكشاف والتفاعل، ويعزز من تجربة الطلاب في تعلم اللغة اليابانية.
-            
             ونحن في أكاديمية اللغة اليابانية نؤمن بأن فهم اللغة لا يقتصر فقط على القواعد والمفردات، بل يتضمن أيضًا التعرف على العادات والتقاليد التي تشكل جوهر اللغة وتؤثر فيها بشكل مباشر. ونحرص على أن يكون كل درس مليئًا بالمعلومات القيمة والتجارب الثقافية، مما يمنح طلابنا أدوات للتواصل الفعّال وفهم أعمق للغة والثقافة. ونحن فخورون بفريقنا المتنوع الذي يساهم في تعزيز التفاهم بين الثقافات، ويعمل على بناء جسر ثقافي بين العالم العربي واليابان.
           </ReadMore>
         </div>
-      </div>
+      </motion.div>
 
       <div className="flex flex-col gap-8">
         
         {/* صورة الهيئة التدريسية المجمعة */}
-        <div className="w-full">
+        <motion.div 
+          className="w-full"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7 }}
+        >
           <img className="w-full rounded-2xl shadow-md" src={Our_Teachers_img} alt="أعضاء الهيئة التدريسية" />
-        </div>
+        </motion.div>
 
-        {/* قائمة المعلمين */}
-        <ul className="flex flex-col gap-10 p-0 list-none">
+        {/* قائمة المعلمين - مع تأثير التتابع Stagger */}
+        <motion.ul 
+          className="flex flex-col gap-10 p-0 list-none"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           
           {/* 1. الأستاذة يوكو تاناكا */}
-          <li className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
+          <motion.li variants={itemVariants} className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-4 border-b-2 border-brand-gold/40 pb-2 inline-block">
               الأستاذة يوكو تاناكا:
             </h2>
@@ -46,16 +83,17 @@ export default function Teachers() {
                   حاصلة على درجة الماجستير في التعليم من جامعة طوكيو، ومتخصصة في تعليم اللغة اليابانية للأجانب منذ أكثر من 10 سنوات. تُجيد العربية وتعمل مع الطلاب العرب على تطوير مهاراتهم في المحادثة والتواصل الفعّال.
                 </ReadMore>
               </div>
-              <img 
-                className="w-28 h-28 md:w-52 md:h-52 rounded-full object-cover border-4 border-brand-gold shadow-md shrink-0" 
+              <motion.img 
+                whileHover={{ scale: 1.05 }}
+                className="w-28 h-28 md:w-52 md:h-52 rounded-full object-cover border-4 border-brand-gold shadow-md shrink-0 cursor-pointer" 
                 src={Teacher_1} 
                 alt="الأستاذة يوكو تاناكا" 
               />
             </div>
-          </li>
+          </motion.li>
 
           {/* 2. الأستاذة ناهد المرعي */}
-          <li className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
+          <motion.li variants={itemVariants} className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-4 border-b-2 border-brand-gold/40 pb-2 inline-block">
               الأستاذة ناهد المرعي
             </h2>
@@ -66,8 +104,9 @@ export default function Teachers() {
                   لقد بدأت مسيرتي في دراسة اللغة اليابانية في عام 2009، حيث حصلت على إجازة جامعية من كلية الآداب والعلوم الإنسانية، قسم اللغة اليابانية، في جامعة دمشق. وقد كانت تجربتي الأولى كمُعيدة في قسم اللغة اليابانية خطوةً أساسية لبدء مسيرة أكاديمية هدفها نقل جماليات هذه اللغة وآدابها إلى طلابي.
                 </ReadMore>
               </div>
-              <img 
-                className="w-28 h-28 md:w-52 md:h-52 rounded-full object-cover border-4 border-brand-gold shadow-md shrink-0" 
+              <motion.img 
+                whileHover={{ scale: 1.05 }}
+                className="w-28 h-28 md:w-52 md:h-52 rounded-full object-cover border-4 border-brand-gold shadow-md shrink-0 cursor-pointer" 
                 src={Teacher_2} 
                 alt="الأستاذة ناهد المرعي" 
               />
@@ -79,10 +118,10 @@ export default function Teachers() {
                 ويشكل عملي في أكاديمية اللغة اليابانية جزءًا أساسيًا من أهدافي المستقبلية، حيث أطمح إلى تأسيس جيل جديد من متعلمي اللغة اليابانية بين الناطقين بالعربية، مع تمكينهم من بناء جسور ثقافية وأكاديمية تربط بين الثقافتين اليابانية والعربية.
               </ReadMore>
             </div>
-          </li>
+          </motion.li>
 
           {/* 3. الأستاذة ميئكو نشيئوتشي */}
-          <li className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
+          <motion.li variants={itemVariants} className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-4 border-b-2 border-brand-gold/40 pb-2 inline-block">
               الأستاذة ميئكو نشيئوتشي
             </h2>
@@ -93,8 +132,9 @@ export default function Teachers() {
                   لقد بدأ شغفي باللغة والثقافة العربية منذ وقت مبكر، وأمضيت سنوات في الإقامة والعمل في المنطقة العربية، حيث انغمست في تفاصيل الحياة والثقافة العربية وتعلمت اللغة العربية حتى أتقنتها.
                 </ReadMore>
               </div>
-              <img 
-                className="w-28 h-28 md:w-52 md:h-52 rounded-full object-cover border-4 border-brand-gold shadow-md shrink-0" 
+              <motion.img 
+                whileHover={{ scale: 1.05 }}
+                className="w-28 h-28 md:w-52 md:h-52 rounded-full object-cover border-4 border-brand-gold shadow-md shrink-0 cursor-pointer" 
                 src={Teacher_3} 
                 alt="الأستاذة ميئكو نشيئوتشي" 
               />
@@ -109,10 +149,10 @@ export default function Teachers() {
                 ومن خلال تعليمي للغة اليابانية في أكاديمية اللغة اليابانية أسعى لأن أكون مصدر إلهام حقيقي لكل من يرغب بتعلم هذه اللغة الجميلة، وتعريفهم على ثقافة اليابان وقيمها وعاداتها التي تجعل منها بلدًا فريدًا وساحرًا. <br />
               </ReadMore>
             </div>
-          </li>
+          </motion.li>
 
           {/* 4. الأستاذ خالد سليمان */}
-          <li className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
+          <motion.li variants={itemVariants} className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-4 border-b-2 border-brand-gold/40 pb-2 inline-block">
               الأستاذ خالد سليمان
             </h2>
@@ -123,8 +163,9 @@ export default function Teachers() {
                   عندما بدأت رحلتي الأكاديمية في كلية الاقتصاد في جامعة دمشق، كانت اليابان بالنسبة لي مجرد بلد بعيد يقع في أقصى الشرق، وكان كل ما أعرفه عن اللغة اليابانية هي تلك الحروف والكلمات الغريبة التي كانت تظهر في شاشة التلفاز عند مشاهدة (الأنمي) الياباني القادم من ذلك البلد.
                 </p>
               </div>
-              <img 
-                className="w-28 h-28 md:w-52 md:h-52 rounded-full object-cover border-4 border-brand-gold shadow-md shrink-0" 
+              <motion.img 
+                whileHover={{ scale: 1.05 }}
+                className="w-28 h-28 md:w-52 md:h-52 rounded-full object-cover border-4 border-brand-gold shadow-md shrink-0 cursor-pointer" 
                 src={Teacher_1} 
                 alt="الأستاذ خالد سليمان" 
               />
@@ -139,9 +180,9 @@ export default function Teachers() {
                 وفي أكاديمية اللغة اليابانية، أسعى لأن أتابع هذه الرسالة، وأن أنقل رحلتي إلى أشخاص يملكون ذات الشغف، لأمهد لهم طريقًا يربط بين اللغة والثقافة اليابانية، ولأساعدهم في بناء جسورهم الخاصة إلى ثقافة ثرية وجميلة، لعلهم يحملون بدورهم رسائل تقرِّب بين الثقافات، ويكتبون قصصهم الخاصة على طريقهم إلى اليابان.
               </ReadMore>
             </div>
-          </li>
+          </motion.li>
 
-        </ul>
+        </motion.ul>
       </div>
     </section>
   );

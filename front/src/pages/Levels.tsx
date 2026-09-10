@@ -1,0 +1,222 @@
+import { motion, type Variants } from "framer-motion";
+
+import img_lisson from "../assets/Level_div/9bf252b1-f72c-4ab3-b8d4-f9dbd6ba947f.webp";
+import img_read from "../assets/Level_div/f8bcafb4-5b49-4da9-8bb3-92e3f75bce9e.webp";
+import img_listen from "../assets/Level_div/20102b1c-f765-4316-b5ce-f6690c682010.webp";
+import img_write from "../assets/Level_div/621b977e-14ea-4c95-96a0-b4487827a673.webp";
+import img_talk from "../assets/Level_div/a8d31677-60f5-4507-9984-ebdced19d05a.webp";
+
+// إعدادات حركة الحاوية (لظهور العناصر بشكل متتابع)
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+// إعدادات حركة العنصر الواحد (انزلاق من الأسفل)
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" } 
+  },
+};
+
+export default function Levels() {
+  return (
+    <section 
+      className="px-4 xl:px-[90px] mt-10 overflow-hidden text-brand-black" 
+      id="Level_division" 
+      dir="rtl"
+    >
+      
+      {/* القسم العلوي: المستويات الدراسية */}
+      {/* تم تغيير items-center إلى items-start هنا لجعل المحاذاة علوية */}
+      <motion.div 
+        className="flex flex-col lg:flex-row items-start gap-8 mb-16"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        variants={containerVariants}
+      >
+        <motion.div variants={fadeInUp} className="w-full lg:w-7/12">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-6">
+            المستويات الدراسية
+          </h2>
+          <div className="text-lg md:text-xl lg:text-2xl leading-loose text-justify text-brand-black/90">
+            تقدم <span className="font-bold text-brand-red"> أكاديمية اللغة اليابانية </span>{" "}
+            برنامجًا دراسيًا متكاملًا لتعلم اللغة اليابانية، ومصممًا خصيصًا للناطقين باللغة العربية. وينقسم البرنامج إلى عدة مستويات تعليمية تبدأ من الأساسيات وحتى الوصول إلى الطلاقة اللغوية، لتلبية احتياجات المتعلمين المختلفين. ويهدف هذا التقسيم إلى تمكين الطلاب من تطوير مهاراتهم اللغوية بشكل متدرج ومنظم، بحيث يتمكنون من فهم اللغة اليابانية واستخدامها بشكل عملي وفعّال. وتنقسم المستويات الدراسية في {" "}
+            <span className="font-bold text-brand-red"> أكاديمية اللغة اليابانية </span> إلى المستويات التالية:
+          </div>
+        </motion.div>
+        <motion.div variants={fadeInUp} className="w-full lg:w-5/12">
+          <img className="w-full rounded-2xl shadow-md border border-brand-gold/20" src={img_lisson} alt="المستويات الدراسية" />
+        </motion.div>
+      </motion.div>
+
+      {/* قائمة تفاصيل المستويات */}
+      <motion.ul 
+        className="flex flex-col gap-10 list-none p-0 mb-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        variants={containerVariants}
+      >
+        <motion.li variants={fadeInUp} className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-4 border-b-2 border-brand-gold/40 pb-2 inline-block">1. المستويات المبتدئة</h2>
+          <p className="text-lg md:text-xl lg:text-2xl leading-loose text-justify text-brand-black">
+            تنقسم المستويات المبتدئة في{" "}
+            <span className="font-bold text-brand-red"> أكاديمية اللغة اليابانية </span>{" "}
+            إلى ثلاثة مستويات، وهي الخطوة الأولى للطلاب الذين لم يسبق لهم أن تعلموا اللغة اليابانية، أو بدؤوا في تعلمها حديثًا. وفي هذه المستويات، يتعلم الطلاب الأبجدية اليابانية الأساسية (الهيراغانا والكاتاكانا)، وأساسيات النطق، وقواعد اللغة الأساسية، مع بعض حروف الكانجي الأساسية، مما يضعهم على طريق فهم الجمل البسيطة والتعبيرات اليومية. ويتم التركيز على بناء قاعدة قوية، تشمل كلمات وجملًا بسيطة، إلى جانب تطوير مهارات الاستماع والنطق، لتسهيل عملية الانتقال إلى مستويات أعلى. وتنقسم المستويات المبتدئة إلى المستويات الأربعة التالية:
+            <br /><br />
+            <span className="mr-4 block">1- المستوى المبتدئ الأساسي (J1)</span>
+            <span className="mr-4 block">2- المستوى المبتدئ المتوسط (J2)</span>
+            <span className="mr-4 block">3- المستوى المبتدئ المتقدم (J3)</span>
+            <span className="mr-4 block">4- المستوى المبتدئ الاحترافي (J4)</span>
+          </p>
+        </motion.li>
+
+        <motion.li variants={fadeInUp} className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-4 border-b-2 border-brand-gold/40 pb-2 inline-block">2. المستويات المتوسطة</h2>
+          <p className="text-lg md:text-xl lg:text-2xl leading-loose text-justify text-brand-black">
+            بمجرد إتمام المستويات المبتدئة، ينتقل طلاب{" "}
+            <span className="font-bold text-brand-red"> أكاديمية اللغة اليابانية </span>{" "}
+            إلى المستويات المتوسطة، والتي تنقسم بدورها إلى ثلاثة مستويات، حيث يصبحون قادرين على بناء جمل أكثر تعقيدًا، واستخدام تراكيب لغوية متنوعة. وفي هذه المستويات، يتعلم الطلاب مجموعة واسعة من المفردات والتعابير اللغوية التي تساعدهم على التفاعل في مواقف الحياة اليومية، والتواصل بثقة في بيئات غير مألوفة. كما يتم التركيز على تطوير مهارات القراءة وفهم النصوص اليابانية البسيطة وحتى المتوسطة من خلال تعلم المزيد من حروف الكانجي، ليصبح الطلاب قادرين على قراءة وفهم النصوص اليابانية بشكل أفضل. وتنقسم المستويات المتوسطة إلى المستويات الأربعة التالية:
+            <br /><br />
+            <span className="mr-4 block">1- المستوى المتوسط المبتدئ (J5)</span>
+            <span className="mr-4 block">2- المستوى المتوسط الأساسي (J6)</span>
+            <span className="mr-4 block">3- المستوى المتوسط المتقدم (J7)</span>
+            <span className="mr-4 block">4- المستوى المتوسط الاحترافي (J8)</span>
+          </p>
+        </motion.li>
+
+        <motion.li variants={fadeInUp} className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-4 border-b-2 border-brand-gold/40 pb-2 inline-block">3. المستويات المتقدمة</h2>
+          <p className="text-lg md:text-xl lg:text-2xl leading-loose text-justify text-brand-black">
+            عند الوصول إلى المستويات المتقدمة، يكتسب الطلاب القدرة على فهم واستخدام اللغة اليابانية في سياقات أكثر تعقيدًا، سواءً في المحادثات أو في قراءة النصوص المكتوبة. وفي{" "}
+            <span className="font-bold text-brand-red"> أكاديمية اللغة اليابانية </span>{" "}
+            يتم التركيز في هذه المستويات على صقل المهارات اللغوية من خلال التعرف على تراكيب لغوية معقدة وتوسيع المفردات بما يشمل مصطلحات تقنية وثقافية. وتهدف الأكاديمية في المستويات المتقدمة إلى تأهيل الطلاب للتفاعل بطلاقة في بيئات واقعية، سواءً في مجال العمل أو الدراسة أو حتى النشاطات الترفيهية. وتنقسم المستويات المتقدمة إلى المستويات الأربعة التالية:
+            <br /><br />
+            <span className="mr-4 block">1- المستوى المتقدم المبتدئ (J9)</span>
+            <span className="mr-4 block">2- المستوى المتقدم المتوسط (J10)</span>
+            <span className="mr-4 block">3- المستوى المتقدم الأساسي (J11)</span>
+            <span className="mr-4 block">4- المستوى المتقدم الاحترافي (J12)</span>
+          </p>
+        </motion.li>
+
+        <motion.li variants={fadeInUp} className="p-6 md:p-8 bg-white rounded-2xl border border-brand-gold/30 shadow-sm hover:shadow-md transition-shadow">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-red mb-4 border-b-2 border-brand-gold/40 pb-2 inline-block">4. المستويات الاحترافية</h2>
+          <p className="text-lg md:text-xl lg:text-2xl leading-loose text-justify text-brand-black">
+            المستويات الاحترافية هي مستويات موجهة للطلاب الذين يسعون لاستخدام اللغة اليابانية بشكل متمكن واحترافي في مجالات متنوعة مثل الأكاديمية والمهنية. وتهدف{" "}
+            <span className="font-bold text-brand-red"> أكاديمية اللغة اليابانية </span>{" "}
+            من خلال هذه المستويات إلى توفير تدريب شامل ومتعمق، وتُركز على اكتساب الطلاب القدرة على التعامل مع نصوص معقدة مثل الأبحاث العلمية، والمقالات المتخصصة، والتقارير المهنية، مما يعزز قدرتهم على فهم واستخدام اللغة اليابانية بشكل يتماشى مع أعلى المعايير اللغوية. وبالإضافة إلى ذلك، تولي الأكاديمية في هذه المستويات اهتمامًا خاصًا لتطوير مهارات التواصل في بيئات العمل اليابانية، سواء من خلال المحادثات اليومية أو عبر الكتابة المهنية مثل الرسائل الرسمية والتقارير المهنية، مما يعزز فرص النجاح والتفوق في بيئة عمل احترافية. وتنقسم هذه المستويات إلى المستويات الأربعة التالية:
+            <br /><br />
+            <span className="mr-4 block">1- المستوى الاحترافي المبتدئ (J13)</span>
+            <span className="mr-4 block">2- المستوى الاحترافي المتوسط (J14)</span>
+            <span className="mr-4 block">3- المستوى الاحترافي الأساسي (J15)</span>
+            <span className="mr-4 block">4- المستوى الاحترافي المتقدم (J16)</span>
+          </p>
+        </motion.li>
+      </motion.ul>
+
+      <motion.hr 
+        initial={{ opacity: 0, scaleX: 0 }} 
+        whileInView={{ opacity: 1, scaleX: 1 }} 
+        className="my-8 border-brand-gold/40" 
+      />
+
+      <motion.p 
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }}
+        className="text-lg md:text-xl lg:text-2xl text-justify leading-loose mb-10 text-brand-black"
+      >
+        إن كل مستوى في <span className="font-bold text-brand-red">أكاديمية اللغة اليابانية</span> يتضمن برنامجًا دراسيًا شاملًا يغطي جميع المهارات الأساسية التي يحتاجها الطالب لتعلم اللغة بشكل متكامل. وتشمل هذه المهارات القراءة، والكتابة، والاستماع، والمحادثة، حيث يُعطى كل جانب من هذه المهارات اهتمامًا خاصًا بما يتناسب مع مستوى الطالب وتقدمه. ويتم بناء المنهج بطريقة مرنة بحيث يُمكن للطلاب التقدم حسب قدراتهم الشخصية واحتياجاتهم اللغوية. وتنقسم المهارات اللغوية في أكاديمية اللغة اليابانية إلى المهارات التالية:
+      </motion.p>
+
+      {/* قسم المهارات (مع التناوب بين اليمين واليسار) */}
+      {/* تم تغيير items-center إلى items-start هنا أيضاً */}
+      <motion.ul 
+        className="flex flex-col gap-12 list-none p-0 mb-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        variants={containerVariants}
+      >
+        {/* مهارات القراءة */}
+        <motion.li variants={fadeInUp} className="flex flex-col lg:flex-row items-start gap-8">
+          <div className="w-full lg:w-7/12">
+            <p className="text-lg md:text-xl lg:text-2xl leading-loose text-justify text-brand-black">
+              <span className="font-bold text-brand-red block mb-2">1. مهارات القراءة:</span> تتضمن
+              مهارات القراءة في <span className="font-bold text-brand-red">أكاديمية اللغة اليابانية</span>{" "}
+              دراسة النصوص اليابانية المتنوعة التي تبدأ من النصوص البسيطة حتى الوصول إلى النصوص المتقدمة والمعقدة. ويتعلم الطلاب في المراحل الأولى كيفية قراءة الحروف الأبجدية اليابانية (الهيراغانا والكاتاكانا)، ثم ينتقلون إلى قراءة الجمل والنصوص القصيرة التي تحتوي على حروف الكانجي. ومع تقدمهم في المستويات الدراسية، يتعلمون المزيد من حروف الكانجي، ويتعاملون مع نصوص أدبية وعلمية تحتوي على مفردات وصيغ لغوية معقدة، مما يساعدهم على تحسين مهارات الفهم والاستيعاب لديهم.
+            </p>
+          </div>
+          <div className="w-full lg:w-5/12">
+            <img className="w-full rounded-2xl shadow-md border border-brand-gold/20" src={img_read} alt="مهارات القراءة" />
+          </div>
+        </motion.li>
+
+        {/* مهارات الكتابة */}
+        <motion.li variants={fadeInUp} className="flex flex-col-reverse lg:flex-row items-start gap-8">
+          <div className="w-full lg:w-5/12">
+            <img className="w-full rounded-2xl shadow-md border border-brand-gold/20" src={img_write} alt="مهارات الكتابة" />
+          </div>
+          <div className="w-full lg:w-7/12">
+            <p className="text-lg md:text-xl lg:text-2xl leading-loose text-justify text-brand-black">
+              <span className="font-bold text-brand-red block mb-2">2. مهارات الكتابة:</span> تركز{" "}
+              <span className="font-bold text-brand-red">أكاديمية اللغة اليابانية</span>{" "}
+              على تطوير قدرة الطلاب على الكتابة بشكل صحيح ودقيق باستخدام الأساليب الأكاديمية والمهنية. ويبدأ الطلاب في كتابة الجمل البسيطة، ثم يتدرجون نحو كتابة المقالات والتقارير الأكاديمية والمهنية. ويتعلمون أيضًا كتابة رسائل رسمية واحترافية تتماشى مع معايير بيئة العمل اليابانية، مما يساعدهم على التفاعل مع بيئات الدراسة والعمل بطرق احترافية.
+            </p>
+          </div>
+        </motion.li>
+
+        {/* مهارات الاستماع */}
+        <motion.li variants={fadeInUp} className="flex flex-col lg:flex-row items-start gap-8">
+          <div className="w-full lg:w-7/12">
+            <p className="text-lg md:text-xl lg:text-2xl leading-loose text-justify text-brand-black">
+              <span className="font-bold text-brand-red block mb-2">3. مهارات الاستماع:</span> تُعتبر مهارات الاستماع من أهم الجوانب التي يتم التركيز عليها في جميع المستويات في{" "}
+              <span className="font-bold text-brand-red">أكاديمية اللغة اليابانية</span>{" "}
+              حيث يبدأ الطلاب في الاستماع إلى محادثات بسيطة باللغة اليابانية، ومن ثم يتدرجون إلى الاستماع إلى حوارات ومحاضرات متقدمة تحتوي على مفردات معقدة وأسلوب لغوي أكاديمي ومهني. ويتم تعزيز مهارات الاستماع من خلال تمارين عملية تساعد الطلاب على فهم التعابير المختلفة، والتعرف على أساليب التحدث في البيئات الأكاديمية والمهنية المختلفة.
+            </p>
+          </div>
+          <div className="w-full lg:w-5/12">
+            <img className="w-full rounded-2xl shadow-md border border-brand-gold/20" src={img_listen} alt="مهارات الاستماع" />
+          </div>
+        </motion.li>
+
+        {/* مهارات المحادثة */}
+        <motion.li variants={fadeInUp} className="flex flex-col-reverse lg:flex-row items-start gap-8">
+          <div className="w-full lg:w-5/12">
+            <img className="w-full rounded-2xl shadow-md border border-brand-gold/20" src={img_talk} alt="مهارات المحادثة" />
+          </div>
+          <div className="w-full lg:w-7/12">
+            <p className="text-lg md:text-xl lg:text-2xl leading-loose text-justify text-brand-black">
+              <span className="font-bold text-brand-red block mb-2">4. مهارات المحادثة:</span>
+              تُعد مهارات المحادثة من أكثر المهارات أهمية عند تعلم أي لغة أجنبية. وفي{" "}
+              <span className="font-bold text-brand-red">أكاديمية اللغة اليابانية</span>{" "}
+              تتمثل أهمية هذه المهارة في تمكين الطلاب من التواصل بثقة مع الناطقين باللغة اليابانية في مختلف المواقف الحياتية والمهنية. ويتم تدريب الطلاب على التحدث باللغة اليابانية في بيئات متنوعة، سواءً في المحادثات اليومية أو في المناقشات الأكاديمية والمهنية. ويشمل التدريب على تحسين النطق، والقدرة على التعبير عن الأفكار بوضوح وبأسلوب مناسب للمواقف المختلفة.
+            </p>
+          </div>
+        </motion.li>
+      </motion.ul>
+
+      <motion.hr 
+        initial={{ opacity: 0, scaleX: 0 }} 
+        whileInView={{ opacity: 1, scaleX: 1 }} 
+        className="my-8 border-brand-gold/40" 
+      />
+
+      <motion.p 
+        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }}
+        className="text-lg md:text-xl lg:text-2xl text-justify leading-loose mb-10 text-brand-black"
+      >
+        وكل هذه المهارات يتم تدريسها في <span className="font-bold text-brand-red">أكاديمية اللغة اليابانية</span> تحت إشراف فريق من المدرسين المتخصصين، يقومون بتقديم التوجيه والدعم المستمر للطلاب، ويقومون بتحديد تقدم الطلاب بناءً على تقييماتهم الفردية، مما يسمح بتحديد المستويات وطرق التدريس المناسبة لاحتياجات كل طالب. ويتعامل المدرسون في أكاديمية اللغة اليابانية مع الطلاب بشكل شخصي، حيث يساعدونهم على تخطي التحديات اللغوية التي قد يواجهونها، مما يضمن تقدمهم في تعلم اللغة اليابانية بطريقة فعّالة وملائمة لمستوى كل منهم على حدى.
+      </motion.p>
+
+    </section>
+  );
+}

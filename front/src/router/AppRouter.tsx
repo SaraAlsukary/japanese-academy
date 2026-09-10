@@ -10,7 +10,7 @@ const ComingSoon = lazy(() => import("../pages/ComingSoon.tsx")); // تم رفع
 // const Login = lazy(() => import("../pages/Login/Login.tsx"));
 // const Questions = lazy(() => import("../pages/Questions/Questions.tsx"));
 // const Articles = lazy(() => import("../pages/Articles/Articles.tsx"));
-// const Level_division = lazy(() => import("../pages/Level_division/Level_division.tsx"));
+const Level = lazy(() => import("../pages/Levels.tsx"));
 // const Register = lazy(() => import("../pages/Register/Register.tsx"));
 const Teachers = lazy(() => import("../pages/Teachers.tsx"));
 // const Study_materials = lazy(() => import("../pages/Study_materials/Study_materials.tsx"));
@@ -69,7 +69,7 @@ export default function AppRouter() {
                 // { path: "About", element: <About /> },
                 // { path: "Date", element: <Date_lisson /> },
                 // { path: "Articles", element: <Articles /> },
-                // { path: "Level_division", element: <Level_division /> },
+                { path: "Levels", element: <Level /> },
                 { path: "Teachers", element: <Teachers /> },
                 // { path: "Study_materials", element: <Study_materials /> },
                 // { path: "More_services", element: <More_services /> },
