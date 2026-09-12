@@ -120,7 +120,7 @@ export default function Navbar() {
             <NavLinkItem to="/home" icon={FaHome} text="الصفحة الرئيسية" />
             <NavLinkItem to="Teachers" icon={FaUserGroup} text="الهيئة التدريسية" />
             <NavLinkItem to="Levels" icon={MdLibraryBooks} text="المستويات الدراسية" />
-            <NavLinkItem to="Study_materials" icon={FaBook} text="المواد الدراسية" />
+            <NavLinkItem to="Subjects" icon={FaBook} text="المواد الدراسية" />
           </div>
 
           <div className="flex flex-col xl:flex-row flex-wrap items-center justify-center text-center w-full xl:w-auto xl:gap-0">
