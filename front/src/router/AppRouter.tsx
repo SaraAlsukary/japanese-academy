@@ -8,7 +8,7 @@ import { lazy } from "react";
 const Home = lazy(() => import("../pages/Home.tsx")); // تم رفع التعليق هنا لأنك تستخدمه في الأسفل
 const ComingSoon = lazy(() => import("../pages/ComingSoon.tsx")); // تم رفع التعليق هنا لأنك تستخدمه في الأسفل
 // const Login = lazy(() => import("../pages/Login/Login.tsx"));
-// const Questions = lazy(() => import("../pages/Questions/Questions.tsx"));
+const Questions = lazy(() => import("../pages/Questions.tsx"));
 // const Articles = lazy(() => import("../pages/Articles/Articles.tsx"));
 const Level = lazy(() => import("../pages/Levels.tsx"));
 // const Register = lazy(() => import("../pages/Register/Register.tsx"));
@@ -16,14 +16,14 @@ const Teachers = lazy(() => import("../pages/Teachers.tsx"));
 const Subjects = lazy(() => import("../pages/Subjects.tsx"));
 const Fees = lazy(() => import("../pages/Fees.tsx"));
 // const Study_materials = lazy(() => import("../pages/Study_materials/Study_materials.tsx"));
-// const More_services = lazy(() => import("../pages/More_services/More_services.tsx"));
-// const Support = lazy(() => import("../pages/Support/Support.tsx"));
+const MoreServices = lazy(() => import("../pages/MoreServices.tsx"));
+const Support = lazy(() => import("../pages/Support.tsx"));
 // const Fees = lazy(() => import("../pages/Fees/Fees.tsx"));
 // const Login_users = lazy(() => import("../pages/Login_users/Login_users.tsx"));
 // const Register_accounts = lazy(() => import("../pages/Register_accounts/Register_accounts.tsx"));
 // const Dash_users = lazy(() => import("../pages/Dash_users/Dash_users.tsx"));
 // const Privacy = lazy(() => import("../pages/Privacy/Privacy.tsx"));
-// const CommetS = lazy(() => import("../pages/CommetS/CommetS.tsx"));
+const Comments = lazy(() => import("../pages/Comments.tsx"));
 // const Term = lazy(() => import("../pages/Term/Term.tsx"));
 // const Dash_Teachers = lazy(() => import("../pages/Dash_Teachers/Dash_Teachers.tsx"));
 // const Reset_Password = lazy(() => import("../pages/Reset_Password/Reset_Password.tsx"));
@@ -75,11 +75,11 @@ export default function AppRouter() {
                 { path: "Subjects", element: <Subjects /> },
                 { path: "Teachers", element: <Teachers /> },
                 // { path: "Study_materials", element: <Study_materials /> },
-                // { path: "More_services", element: <More_services /> },
-                // { path: "Support", element: <Support /> },
+                { path: "More_services", element: <MoreServices /> },
+                { path: "Support", element: <Support /> },
                 { path: "Fees", element: <Fees /> },
-                // { path: "Comments", element: <CommetS /> },
-                // { path: "Questions", element: <Questions /> },
+                { path: "Comments", element: <Comments /> },
+                { path: "Questions", element: <Questions /> },
                 // { path: "Privacy", element: <Privacy /> },
                 // { path: "Terms", element: <Term /> },
                 // { path: "Level-test", element: <LevelTest /> },
