@@ -19,14 +19,14 @@ const Fees = lazy(() => import("../pages/Fees.tsx"));
 const MoreServices = lazy(() => import("../pages/MoreServices.tsx"));
 const Support = lazy(() => import("../pages/Support.tsx"));
 // const Fees = lazy(() => import("../pages/Fees/Fees.tsx"));
-// const Login_users = lazy(() => import("../pages/Login_users/Login_users.tsx"));
-// const Register_accounts = lazy(() => import("../pages/Register_accounts/Register_accounts.tsx"));
+const Login = lazy(() => import("../pages/Login.tsx"));
+const Register = lazy(() => import("../pages/Register.tsx"));
 // const Dash_users = lazy(() => import("../pages/Dash_users/Dash_users.tsx"));
 // const Privacy = lazy(() => import("../pages/Privacy/Privacy.tsx"));
 const Comments = lazy(() => import("../pages/Comments.tsx"));
 // const Term = lazy(() => import("../pages/Term/Term.tsx"));
 // const Dash_Teachers = lazy(() => import("../pages/Dash_Teachers/Dash_Teachers.tsx"));
-// const Reset_Password = lazy(() => import("../pages/Reset_Password/Reset_Password.tsx"));
+const ForgotPassword = lazy(() => import("../pages/ForgotPassword.tsx"));
 
 /* Sections */
 // const LevelTest = lazy(() => import("../sections/Level_Determination/LevelTest.tsx"));
@@ -83,7 +83,7 @@ export default function AppRouter() {
                 // { path: "Privacy", element: <Privacy /> },
                 // { path: "Terms", element: <Term /> },
                 // { path: "Level-test", element: <LevelTest /> },
-                // { path: "Reset_Password", element: <Reset_Password /> },
+                { path: "Reset_Password", element: <ForgotPassword /> },
 
                 /* ================= AUTH ================= */
                 // {
@@ -94,14 +94,16 @@ export default function AppRouter() {
                 //     path: "Register",
                 //     element: hasAccess() ? <Navigate to="/" /> : <Register />,
                 // },
-                // {
-                //     path: "Login_users",
-                //     element: hasAccess() ? <Navigate to="/" /> : <Login_users />,
-                // },
-                // {
-                //     path: "Register_account",
-                //     element: hasAccess() ? <Navigate to="/" /> : <Register_accounts />,
-                // },
+                {
+                    path: "Login_users",
+                    // element: hasAccess() ? <Navigate to="/" /> : <Login_users />,
+                    element: <Login />,
+                },
+                {
+                    path: "Register_account",
+                    // element: hasAccess() ? <Navigate to="/" /> : <Register />,
+                    element: <Register />,
+                },
                 // {
                 //     path: "Dash_Teachers",
                 //     element: (

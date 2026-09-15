@@ -70,8 +70,8 @@ export default function Navbar() {
       <div className="flex xl:hidden items-center justify-center w-auto min-[330px]:w-[200px] order-2">
         {/* أزرار التسجيل والدخول مفعلة */}
         <div className="flex gap-1">
-          <Link to="/Login_users"><RedNavButton>دخول</RedNavButton></Link>
-          <Link to="/Register_account"><RedNavButton>تسجيل</RedNavButton></Link>
+          <Link to="/home/Login_users"><RedNavButton>دخول</RedNavButton></Link>
+          <Link to="/home/Register_account"><RedNavButton>تسجيل</RedNavButton></Link>
         </div>
 
         {/* الأزرار التي تحتاج تسجيل دخول (معلقة) */}
@@ -103,8 +103,8 @@ export default function Navbar() {
         <div className="hidden xl:flex items-center justify-end ml-4">
           {/* أزرار التسجيل والدخول مفعلة */}
           <div className="flex flex-col gap-3">
-            <Link to="/Register_account"><RedNavButton>سجل الآن</RedNavButton></Link>
-            <Link to="/Login_users"><RedNavButton>تسجيل الدخول</RedNavButton></Link>
+            <Link to="/home/Register_account"><RedNavButton>سجل الآن</RedNavButton></Link>
+            <Link to="/home/Login_users"><RedNavButton>تسجيل الدخول</RedNavButton></Link>
           </div>
           {/* الأزرار التي تحتاج تسجيل دخول (معلقة) */}
           {/*

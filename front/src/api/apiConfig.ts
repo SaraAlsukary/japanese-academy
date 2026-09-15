@@ -1,0 +1,1 @@
+export const APIURL = 'https://your-api-url.com';
