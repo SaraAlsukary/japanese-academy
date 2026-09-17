@@ -12,13 +12,34 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+                $table->id();
+
+                // معلومات أساسية
+                $table->string('first_name');
+                $table->string('last_name');
+                $table->string('email')->unique();
+                $table->string('password');
+
+                // معلومات إضافية
+                $table->string('phone')->nullable();
+                $table->unsignedTinyInteger('age')->nullable();
+                $table->enum('gender', ['ذكر', 'أنثى'])->nullable();
+
+                $table->string('country')->nullable();
+                $table->string('education_level')->nullable();
+                $table->string('japanese_level')->nullable();
+
+                // النظام
+                $table->string('otp')->nullable();
+                $table->timestamp('otp_expires_at')->nullable();
+
+                $table->string('reset_otp')->nullable();
+                $table->timestamp('reset_otp_expires_at')->nullable();
+                
+                $table->string('role')->default('student');
+                $table->timestamp('email_verified_at')->nullable();
+                $table->rememberToken();
+                $table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

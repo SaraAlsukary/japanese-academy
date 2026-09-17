@@ -2,84 +2,137 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Choices from "choices.js";
 import "choices.js/public/assets/styles/choices.min.css";
-import "flag-icons/css/flag-icons.min.css"; // استيراد مكتبة الأعلام
+import "flag-icons/css/flag-icons.min.css";
 import Register_header from "../components/RegisterHeader";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
-import { APIURL } from "../api/apiConfig";
-import { toast } from "react-toastify"
-// استخدام toast المعتاد
+import { toast } from "react-toastify";
+import { isValidPhoneNumber, type CountryCode } from "libphonenumber-js";
 
-// قائمة الدول بترميز ISO 3166-1 alpha-2 لتوافقها مع مكتبة flag-icons
-const countries = [
-    // الدول العربية
-    { code: "sa", name: "السعودية", dial: "+966" },
-    { code: "eg", name: "مصر", dial: "+20" },
+export interface CountryData {
+    code: string;
+    name: string;
+    dial: string;
+}
+
+export interface CountryData {
+    code: string;
+    name: string;
+    dial: string;
+}
+
+export const countries: CountryData[] = [
+    // ==================== جميع الدول العربية (22 دولة) ====================
+    { code: "sa", name: "المملكة العربية السعودية", dial: "+966" },
     { code: "ae", name: "الإمارات العربية المتحدة", dial: "+971" },
     { code: "kw", name: "الكويت", dial: "+965" },
     { code: "qa", name: "قطر", dial: "+974" },
-    { code: "om", name: "عُمان", dial: "+968" },
     { code: "bh", name: "البحرين", dial: "+973" },
+    { code: "om", name: "عُمان", dial: "+968" },
+    { code: "eg", name: "مصر", dial: "+20" },
     { code: "jo", name: "الأردن", dial: "+962" },
-    { code: "lb", name: "لبنان", dial: "+961" },
     { code: "sy", name: "سوريا", dial: "+963" },
     { code: "iq", name: "العراق", dial: "+964" },
+    { code: "lb", name: "لبنان", dial: "+961" },
     { code: "ps", name: "فلسطين", dial: "+970" },
     { code: "ye", name: "اليمن", dial: "+967" },
+    { code: "sd", name: "السودان", dial: "+249" },
+    { code: "ly", name: "ليبيا", dial: "+218" },
+    { code: "tn", name: "تونس", dial: "+216" },
     { code: "dz", name: "الجزائر", dial: "+213" },
     { code: "ma", name: "المغرب", dial: "+212" },
-    { code: "tn", name: "تونس", dial: "+216" },
-    { code: "ly", name: "ليبيا", dial: "+218" },
-    { code: "sd", name: "السودان", dial: "+249" },
     { code: "mr", name: "موريتانيا", dial: "+222" },
     { code: "so", name: "الصومال", dial: "+252" },
     { code: "dj", name: "جيبوتي", dial: "+253" },
     { code: "km", name: "جزر القمر", dial: "+269" },
 
-    // باقي دول العالم
-    { code: "jp", name: "اليابان", dial: "+81" },
+    // ==================== أوروبا ====================
     { code: "tr", name: "تركيا", dial: "+90" },
-    { code: "us", name: "الولايات المتحدة", dial: "+1" },
-    { code: "ca", name: "كندا", dial: "+1" },
     { code: "gb", name: "المملكة المتحدة", dial: "+44" },
     { code: "de", name: "ألمانيا", dial: "+49" },
     { code: "fr", name: "فرنسا", dial: "+33" },
     { code: "it", name: "إيطاليا", dial: "+39" },
     { code: "es", name: "إسبانيا", dial: "+34" },
     { code: "ru", name: "روسيا", dial: "+7" },
-    { code: "cn", name: "الصين", dial: "+86" },
-    { code: "in", name: "الهند", dial: "+91" },
-    { code: "kr", name: "كوريا الجنوبية", dial: "+82" },
-    { code: "my", name: "ماليزيا", dial: "+60" },
-    { code: "id", name: "إندونيسيا", dial: "+62" },
-    { code: "pk", name: "باكستان", dial: "+92" },
-    { code: "bd", name: "بنغلاديش", dial: "+880" },
-    { code: "au", name: "أستراليا", dial: "+61" },
-    { code: "nz", name: "نيوزيلندا", dial: "+64" },
-    { code: "br", name: "البرازيل", dial: "+55" },
-    { code: "ar", name: "الأرجنتين", dial: "+54" },
-    { code: "mx", name: "المكسيك", dial: "+52" },
     { code: "nl", name: "هولندا", dial: "+31" },
     { code: "be", name: "بلجيكا", dial: "+32" },
     { code: "ch", name: "سويسرا", dial: "+41" },
+    { code: "at", name: "النمسا", dial: "+43" },
     { code: "se", name: "السويد", dial: "+46" },
     { code: "no", name: "النرويج", dial: "+47" },
     { code: "dk", name: "الدنمارك", dial: "+45" },
     { code: "fi", name: "فنلندا", dial: "+358" },
-    { code: "at", name: "النمسا", dial: "+43" },
+    { code: "pl", name: "بولندا", dial: "+48" },
     { code: "gr", name: "اليونان", dial: "+30" },
     { code: "pt", name: "البرتغال", dial: "+351" },
-    { code: "ir", name: "إيران", dial: "+98" },
+    { code: "ie", name: "أيرلندا", dial: "+353" },
+    { code: "cz", name: "التشيك", dial: "+420" },
+    { code: "ro", name: "رومانيا", dial: "+40" },
+    { code: "hu", name: "المجر", dial: "+36" },
+    { code: "ua", name: "أوكرانيا", dial: "+380" },
+
+    // ==================== آسيا والأوقيانوسيا ====================
+    { code: "jp", name: "اليابان", dial: "+81" },
+    { code: "cn", name: "الصين", dial: "+86" },
+    { code: "kr", name: "كوريا الجنوبية", dial: "+82" },
+    { code: "in", name: "الهند", dial: "+91" },
+    { code: "pk", name: "باكستان", dial: "+92" },
+    { code: "bd", name: "بنجلاديش", dial: "+880" },
+    { code: "id", name: "إندونيسيا", dial: "+62" },
+    { code: "my", name: "ماليزيا", dial: "+60" },
     { code: "sg", name: "سنغافورة", dial: "+65" },
     { code: "th", name: "تايلاند", dial: "+66" },
     { code: "vn", name: "فيتنام", dial: "+84" },
     { code: "ph", name: "الفلبين", dial: "+63" },
-    { code: "za", name: "جنوب إفريقيا", dial: "+27" },
+    { code: "ir", name: "إيران", dial: "+98" },
+    { code: "af", name: "أفغانستان", dial: "+93" },
+    { code: "az", name: "أذربيجان", dial: "+994" },
+    { code: "ge", name: "جورجيا", dial: "+995" },
+    { code: "kz", name: "كازاخستان", dial: "+7" },
+    { code: "uz", name: "أوزبكستان", dial: "+998" },
+    { code: "au", name: "أستراليا", dial: "+61" },
+    { code: "nz", name: "نيوزيلندا", dial: "+64" },
+
+    // ==================== الأمريكتان ====================
+    { code: "us", name: "الولايات المتحدة الأمريكية", dial: "+1" },
+    { code: "ca", name: "كندا", dial: "+1" },
+    { code: "mx", name: "المكسيك", dial: "+52" },
+    { code: "br", name: "البرازيل", dial: "+55" },
+    { code: "ar", name: "الأرجنتين", dial: "+54" },
+    { code: "co", name: "كولومبيا", dial: "+57" },
+    { code: "cl", name: "تشيلي", dial: "+56" },
+    { code: "pe", name: "بيرو", dial: "+51" },
+    { code: "ve", name: "فنزويلا", dial: "+58" },
+    { code: "ec", name: "الإكوادور", dial: "+593" },
+    { code: "bo", name: "بوليفيا", dial: "+591" },
+    { code: "py", name: "باراغواي", dial: "+595" },
+    { code: "uy", name: "أوروغواي", dial: "+598" },
+    { code: "cu", name: "كوبا", dial: "+53" },
+    { code: "cr", name: "كوستاريكا", dial: "+506" },
+    { code: "pa", name: "بنما", dial: "+507" },
+
+    // ==================== إفريقيا ====================
+    { code: "za", name: "جنوب أفريقيا", dial: "+27" },
     { code: "ng", name: "نيجيريا", dial: "+234" },
     { code: "ke", name: "كينيا", dial: "+254" },
+    { code: "gh", name: "غانا", dial: "+233" },
+    { code: "et", name: "إثيوبيا", dial: "+251" },
+    { code: "tz", name: "تنزانيا", dial: "+255" },
+    { code: "ug", name: "أوغندا", dial: "+256" },
+    { code: "cm", name: "الكاميرون", dial: "+237" },
+    { code: "ci", name: "ساحل العاج", dial: "+225" },
+    { code: "sn", name: "السنغال", dial: "+221" },
 ];
+import { useRegister, useVerifyOtp, useResendOtp } from "../hooks/useAuthQueries"; // عدل المسار حسب مجلدك
+import { parseApiError } from "../utils/handleApiError";
+import { useAuth } from "../context/AuthContext";
 
 export default function Register_account() {
+
+    // داخل المكون الخاص بك:
+    const registerMutation = useRegister();
+    const verifyOtpMutation = useVerifyOtp();
+    const resendOtpMutation = useResendOtp();
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -98,6 +151,7 @@ export default function Register_account() {
     const [verificationCode, setVerificationCode] = useState("");
     const [showVerificationField, setShowVerificationField] = useState(false);
     const [passwordError, setPasswordError] = useState("");
+    const [phoneError, setPhoneError] = useState("");
     const [passwordCriteria, setPasswordCriteria] = useState({
         length: false,
         uppercase: false,
@@ -106,10 +160,9 @@ export default function Register_account() {
         specialChar: false,
     });
 
-    const [isRegistering, setIsRegistering] = useState(false);
-    const [isVerifying, setIsVerifying] = useState(false);
-    const [, setDirection] = useState("ltr");
-
+    ;
+    // حالة لحفظ أخطاء الحقول فردياً
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
     const ageSelectRef = useRef<HTMLSelectElement | null>(null);
     const countrySelectRef = useRef<HTMLSelectElement | null>(null);
     const countrySelectDialRef = useRef<HTMLSelectElement | null>(null);
@@ -122,10 +175,13 @@ export default function Register_account() {
     const [errorCountry, setErrorCountry] = useState(false);
     const [confirmEmail, setConfirmEmail] = useState("");
     const [errorEmail, setErrorEmail] = useState("");
-    const [, setError] = useState("");
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
     const navigate = useNavigate();
-
+    const { setIsAuthenticated } = useAuth();
+    console.log(fieldErrors)
     const handleCountryChange = (countryCode: string) => {
         const country = countries.find((c) => c.code === countryCode.toLowerCase());
         const countryName = country?.name || "";
@@ -142,11 +198,77 @@ export default function Register_account() {
             setFormData((prev) => ({ ...prev, dial: country.dial }));
         }
     };
-
     useEffect(() => {
         const instances: Choices[] = [];
         const cleanups: (() => void)[] = [];
 
+        // 1. تهيئة اختيار الدولة مع الأعلام برمجياً
+        if (countrySelectRef.current) {
+            const countryInstance = new Choices(countrySelectRef.current, {
+                searchEnabled: true,
+                removeItemButton: true,
+                allowHTML: true,
+                placeholder: true,
+                placeholderValue: "اختر دولة",
+                itemSelectText: '',
+            });
+
+            countryInstance.setChoices(
+                countries.map((c) => ({
+                    value: c.code,
+                    label: `<span class="fi fi-${c.code} ms-2 text-xl md:text-[20px]"></span> ${c.name}`,
+                    selected: c.code === selectedCountry,
+                })),
+                "value",
+                "label",
+                true
+            );
+
+            const handleDOMChange = (e: Event) => {
+                const target = e.target as HTMLSelectElement;
+                handleCountryChange(target.value);
+            };
+
+            countrySelectRef.current.addEventListener("change", handleDOMChange);
+            cleanups.push(() => countrySelectRef.current?.removeEventListener("change", handleDOMChange));
+            instances.push(countryInstance);
+        }
+
+        // 2. تهيئة اختيار رمز الدولة مع الأعلام برمجياً
+        if (countrySelectDialRef.current) {
+            const dialInstance = new Choices(countrySelectDialRef.current, {
+                searchEnabled: true,
+                removeItemButton: true,
+                allowHTML: true,
+                placeholder: true,
+                placeholderValue: "رمز الدولة",
+                itemSelectText: '',
+
+
+            });
+
+            dialInstance.setChoices(
+                countries.map((c) => ({
+                    value: c.dial,
+                    label: `<span class="fi fi-${c.code} ms-2 text-xl md:text-[20px]"></span> ${c.name} (${c.dial})`,
+                    selected: c.dial === selectedCountryDial,
+                })),
+                "value",
+                "label",
+                true
+            );
+
+            const handleDOMChange = (e: Event) => {
+                const target = e.target as HTMLSelectElement;
+                handleCountryDial(target.value);
+            };
+
+            countrySelectDialRef.current.addEventListener("change", handleDOMChange);
+            cleanups.push(() => countrySelectDialRef.current?.removeEventListener("change", handleDOMChange));
+            instances.push(dialInstance);
+        }
+
+        // باقي عناصر الاختيار (العمر، الجنس، المستوى...)
         const setupChoice = (
             ref: React.RefObject<HTMLSelectElement | null>,
             onSelectChange?: (val: string) => void,
@@ -156,7 +278,7 @@ export default function Register_account() {
                 const instance = new Choices(ref.current, {
                     searchEnabled,
                     removeItemButton: true,
-                    allowHTML: true, // تفعيل عرض عناصر HTML والأعلام
+                    allowHTML: true,
                 });
                 instances.push(instance);
 
@@ -171,8 +293,6 @@ export default function Register_account() {
             }
         };
 
-        setupChoice(countrySelectRef, handleCountryChange, true);
-        setupChoice(countrySelectDialRef, handleCountryDial, true);
         setupChoice(ageSelectRef, (val) => setFormData((prev) => ({ ...prev, age: val })), true);
         setupChoice(genderSelectRef, (val) => setFormData((prev) => ({ ...prev, gender: val })), false);
         setupChoice(educationSelectRef, (val) => setFormData((prev) => ({ ...prev, educationLevel: val })), false);
@@ -183,18 +303,6 @@ export default function Register_account() {
             instances.forEach((instance) => instance.destroy());
         };
     }, []);
-
-    useEffect(() => {
-        const lang = navigator.language;
-        const isArabic = lang.startsWith("ar");
-
-        const selectElements = document.querySelectorAll("select");
-        selectElements.forEach((selectElement) => {
-            selectElement.style.direction = isArabic ? "rtl" : "ltr";
-            selectElement.style.textAlign = isArabic ? "right" : "left";
-        });
-    }, []);
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -211,31 +319,68 @@ export default function Register_account() {
         });
     };
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        if (/[\u0600-\u06FF]/.test(value)) {
-            setDirection("rtl");
-        } else {
-            setDirection("ltr");
-        }
+    // 1. دالة التحقق من الكود OTP
+    const handleVerification = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        verifyOtpMutation.mutate(
+            { email: formData.email, otp: verificationCode },
+            {
+                onSuccess: (data) => {
+                    toast.success("تم التحقق من البريد الإلكتروني بنجاح");
+
+                    if (data?.token) localStorage.setItem('token', data.token);
+                    if (setIsAuthenticated) setIsAuthenticated(true);
+
+                    navigate('/home');
+                },
+                onError: (error) => {
+                    const parsed = parseApiError(error);
+
+                    if (parsed.isValidation) {
+                        // تخزين الأخطاء لتظهر تحت كل حقل
+                        setFieldErrors(parsed.errors);
+                        toast.error(parsed.message);
+                    } else {
+                        // عرض إشعار بالخطأ العام
+                        toast.error(parsed.message);
+                    }
+                },
+            }
+        );
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    // 2. دالة إعادة إرسال الكود OTP
+    const handleResetVerification = (e: React.FormEvent) => {
         e.preventDefault();
-        const form = {
-            first_name: formData.firstName,
-            age: Number(formData.age),
-            password_confirmation: formData.confirmPassword,
-            country: formData.country,
-            phone: formData.dial + formData.phone,
-            education_level: formData.educationLevel,
-            gender: formData.gender,
-            email: formData.email,
-            password: formData.password,
-            japanese_level: formData.japaneseLevel,
-            last_name: formData.lastName,
-        };
 
+        resendOtpMutation.mutate(
+            { email: formData.email },
+            {
+                onSuccess: () => {
+                    toast.success("تم إعادة إرسال كود التحقق");
+                },
+                onError: (error) => {
+                    const parsed = parseApiError(error);
+
+                    if (parsed.isValidation) {
+                        // تخزين الأخطاء لتظهر تحت كل حقل
+                        setFieldErrors(parsed.errors);
+                        toast.error(parsed.message);
+                    } else {
+                        // عرض إشعار بالخطأ العام
+                        toast.error(parsed.message);
+                    }
+                },
+            }
+        );
+    };
+
+    // 3. دالة إرسال نموذج التسجيل
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // التحققات الأولية (Validations)
         if (formData.email !== confirmEmail) {
             setErrorEmail("يجب أن يكون البريد الإلكتروني صحيحًا ومتطابقًا.");
             return;
@@ -248,77 +393,61 @@ export default function Register_account() {
             return;
         }
 
+        if (formData.phone && selectedCountry) {
+            const fullPhoneNumber = `${formData.dial}${formData.phone}`;
+            const valid = isValidPhoneNumber(fullPhoneNumber, selectedCountry.toUpperCase() as CountryCode);
+            if (!valid) {
+                setPhoneError("رقم الهاتف غير صحيح للدولة المحددة.");
+                return;
+            }
+        }
+        setPhoneError("");
+
         if (formData.password !== formData.confirmPassword) {
             toast.warning("كلمات السر غير متطابقة");
             return;
         }
 
         if (!Object.values(passwordCriteria).every(Boolean)) {
-            setPasswordError("يجب أن تحتوي كلمة السر على ٨ أحرف على الأقل، حرف كبير واحد، حرف صغير واحد، رقم واحد، ورمز خاص.");
+            setPasswordError("يجب أن تحتوي كلمة السر على جميع الشروط الموضحة بالأسفل.");
             return;
         } else {
             setPasswordError("");
         }
 
-        setIsRegistering(true);
+        const payload = {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            age: Number(formData.age),
+            country: formData.country,
+            gender: formData.gender,
+            education_level: formData.educationLevel,
+            japanese_level: formData.japaneseLevel,
+            phone: `${formData.dial}${formData.phone}`,
+            email: formData.email,
+            password: formData.password,
+            password_confirmation: formData.confirmPassword,
+        };
 
-        try {
-            const response = await fetch(`${APIURL}/register`, {
-                method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json", Accept: "application/json" },
-                body: JSON.stringify(form),
-            });
-            const data = await response.json();
-            if (data.error) {
-                setError(data.error);
-                toast.error(`حدث خطأ: ${data.error}`);
-            } else {
+        // تنفيذ الـ Mutation
+        registerMutation.mutate(payload, {
+            onSuccess: () => {
                 toast.success("تم التسجيل بنجاح، تحقق من بريدك الإلكتروني لتفعيل الحساب");
                 setShowVerificationField(true);
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            toast.error("تعذر الاتصال بالسيرفر");
-        } finally {
-            setIsRegistering(false);
-        }
-    };
+            },
+            onError: (error) => {
+                const parsed = parseApiError(error);
 
-    const handleVerification = (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsVerifying(true);
-        fetch(`${APIURL}/verify-otp`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: formData.email, otp: verificationCode }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.error) {
-                    toast.error("رمز التحقق غير صحيح");
+                if (parsed.isValidation) {
+                    // تخزين الأخطاء لتظهر تحت كل حقل
+                    setFieldErrors(parsed.errors);
+                    toast.error(parsed.message);
                 } else {
-                    toast.success("تم التحقق من البريد الإلكتروني بنجاح");
-                    navigate("/Login_users/");
+                    // عرض إشعار بالخطأ العام
+                    toast.error(parsed.message);
                 }
-            })
-            .catch((error) => console.error("Error:", error))
-            .finally(() => setIsVerifying(false));
-    };
-
-    const handleResetVerification = (e: React.FormEvent) => {
-        e.preventDefault();
-        fetch(`${APIURL}/resend-otp`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: formData.email }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.error) toast.error("حصل خطأ في إعادة الإرسال");
-                else toast.success("تم إعادة إرسال كود التحقق");
-            })
-            .catch((error) => console.error("Error:", error));
+            },
+        });
     };
 
     const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
@@ -326,16 +455,22 @@ export default function Register_account() {
         toast.warning("لا يُسمح بلصق النص هنا.");
     };
 
-    const [passwordVisible, setPasswordVisible] = useState(false);
-    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
     const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
     const toggleConfirmPasswordVisibility = () => setConfirmPasswordVisible(!confirmPasswordVisible);
 
     const inputClasses =
-        "w-full p-2 h-[45px] box-border bg-white border-2 border-[#C5A059] focus:outline-none focus:ring-1 focus:ring-[#8B151A] focus:border-[#8B151A] rounded-[5px] max-md:text-[20px]";
+        "w-full p-2 h-[45px] box-border bg-white border-2 border-[#C5A059] focus:outline-none focus:ring-1 focus:ring-[#8B151A] focus:border-[#8B151A] rounded-[5px] text-xl md:text-[25px]";
     const labelClasses = "block mb-2 font-bold text-xl md:text-2xl";
     const requiredStar = <span className="text-[#8B151A]">*</span>;
-
+    useEffect(() => {
+        if (showVerificationField === true) {
+            // قفز ناعم (Smooth) لأعلى الصفحة
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth", // يجعل الحركة سلسة وليست قفزة مفاجئة
+            });
+        }
+    }, [showVerificationField]);
     return (
         <div className="my-3 mb-5 mx-[12px] xl:mx-[90px] [&_.choices__inner]:bg-[#f5f7f7] [&_.choices__inner]:border-[#C5A059] [&_.choices__inner]:border-2 [&_.choices__inner]:rounded-[5px] [&_.choices__inner]:text-[18px] [&_.choices__inner]:text-[#8B151A] [&_.choices__item]:text-[#8B151A] [&_.choices__list--single_.choices__item.choices__placeholder]:text-[#8B151A]">
             <div className="flex flex-col lg:flex-row-reverse">
@@ -359,10 +494,7 @@ export default function Register_account() {
                                     name="firstName"
                                     required
                                     value={formData.firstName}
-                                    onChange={(e) => {
-                                        handleChange(e);
-                                        handleInputChange(e);
-                                    }}
+                                    onChange={handleChange}
                                     className={inputClasses}
                                     style={{ direction: "rtl" }}
                                 />
@@ -375,10 +507,7 @@ export default function Register_account() {
                                     name="lastName"
                                     required
                                     value={formData.lastName}
-                                    onChange={(e) => {
-                                        handleChange(e);
-                                        handleInputChange(e);
-                                    }}
+                                    onChange={handleChange}
                                     className={inputClasses}
                                     style={{ direction: "rtl" }}
                                 />
@@ -387,31 +516,15 @@ export default function Register_account() {
                             <div className="mb-4">
                                 <label className={labelClasses}>{requiredStar} دولة الإقامة:</label>
                                 <select
-                                    dir="rtl"
                                     ref={countrySelectRef}
-                                    value={selectedCountry}
-                                    onChange={(e) => handleCountryChange(e.target.value)}
-                                    className="w-full rounded-[5px]"
-                                >
-                                    <option value="" disabled>
-                                        اختر دولة
-                                    </option>
-                                    {countries.map((country) => (
-                                        <option
-                                            key={country.code}
-                                            value={country.code}
-                                            dangerouslySetInnerHTML={{
-                                                __html: `<span class="fi fi-${country.code} ms-2"></span> ${country.name}`,
-                                            }}
-                                        />
-                                    ))}
-                                </select>
+                                    className="w-full rounded-[5px] text-xl md:text-[25px]"
+                                ></select>
                                 {errorCountry && <span className="text-[#8B151A] text-[16px]">يرجى اختيار دولة.</span>}
                             </div>
 
                             <div className="mb-4">
                                 <label className={labelClasses}>{requiredStar} العمر:</label>
-                                <select dir="rtl" ref={ageSelectRef} name="age" required onChange={handleChange} className="w-full rounded-[5px]">
+                                <select dir="rtl" ref={ageSelectRef} name="age" required onChange={handleChange} className="w-full rounded-[5px] text-xl md:text-[25px]">
                                     <option value="">اختر العمر</option>
                                     {Array.from({ length: 100 }, (_, i) => i + 1).map((value) => (
                                         <option key={value} value={value} className="text-start text-[25px]">
@@ -423,48 +536,30 @@ export default function Register_account() {
 
                             <div className="mb-4">
                                 <label className={labelClasses}>{requiredStar} الجنس:</label>
-                                <select dir="rtl" ref={genderSelectRef} name="gender" required onChange={handleChange} className="w-full rounded-[5px]">
+                                <select dir="rtl" ref={genderSelectRef} name="gender" required onChange={handleChange} className="w-full rounded-[5px] text-xl md:text-[25px]">
                                     <option value="">اختر الجنس</option>
-                                    <option value="ذكر" className="text-start text-[25px]">
-                                        ذكر
-                                    </option>
-                                    <option value="أنثى" className="text-start text-[25px]">
-                                        أنثى
-                                    </option>
+                                    <option value="ذكر" className="text-start text-[25px]">ذكر</option>
+                                    <option value="أنثى" className="text-start text-[25px]">أنثى</option>
                                 </select>
                             </div>
 
                             <div className="mb-4">
                                 <label className={labelClasses}>{requiredStar} المستوى التعليمي:</label>
-                                <select dir="rtl" ref={educationSelectRef} name="educationLevel" required onChange={handleChange} className="w-full rounded-[5px]">
+                                <select dir="rtl" ref={educationSelectRef} name="educationLevel" required onChange={handleChange} className="w-full rounded-[5px] text-xl md:text-[25px]">
                                     <option value="">اختر المستوى التعليمي</option>
-                                    <option value="المرحلة الابتدائية" className="text-start text-[25px]">
-                                        المرحلة الابتدائية
-                                    </option>
-                                    <option value="المرحلة الإعدادية" className="text-start text-[25px]">
-                                        المرحلة الإعدادية
-                                    </option>
-                                    <option value="المرحلة الثانوية" className="text-start text-[25px]">
-                                        المرحلة الثانوية
-                                    </option>
-                                    <option value="مرحلة التعليم الجامعي" className="text-start text-[25px]">
-                                        مرحلة التعليم الجامعي
-                                    </option>
-                                    <option value="مرحلة المعاهد المتوسطة" className="text-start text-[25px]">
-                                        مرحلة المعاهد المتوسطة
-                                    </option>
-                                    <option value="مرحلة الدراسات العليا (ماجستير)" className="text-start text-[25px]">
-                                        مرحلة الدراسات العليا (ماجستير)
-                                    </option>
-                                    <option value="مرحلة الدراسات العليا (دكتوراه)" className="text-start text-[25px]">
-                                        مرحلة الدراسات العليا (دكتوراه)
-                                    </option>
+                                    <option value="المرحلة الابتدائية">المرحلة الابتدائية</option>
+                                    <option value="المرحلة الإعدادية">المرحلة الإعدادية</option>
+                                    <option value="المرحلة الثانوية">المرحلة الثانوية</option>
+                                    <option value="مرحلة التعليم الجامعي">مرحلة التعليم الجامعي</option>
+                                    <option value="مرحلة المعاهد المتوسطة">مرحلة المعاهد المتوسطة</option>
+                                    <option value="مرحلة الدراسات العليا (ماجستير)">مرحلة الدراسات العليا (ماجستير)</option>
+                                    <option value="مرحلة الدراسات العليا (دكتوراه)">مرحلة الدراسات العليا (دكتوراه)</option>
                                 </select>
                             </div>
 
                             <div className="mb-4">
                                 <label className={labelClasses}>{requiredStar} مستوى اللغة اليابانية:</label>
-                                <select dir="rtl" ref={japaneseLevelSelectRef} name="japaneseLevel" required onChange={handleChange} className="w-full rounded-[5px]">
+                                <select dir="rtl" ref={japaneseLevelSelectRef} name="japaneseLevel" required onChange={handleChange} className="w-full rounded-[5px] text-xl md:text-[25px]">
                                     <option value="">اختر مستوى اللغة اليابانية</option>
                                     {Array.from({ length: 16 }, (_, index) => `J${index + 1}`).map((value) => (
                                         <option key={value} value={value} className="text-start text-[25px]">
@@ -489,32 +584,17 @@ export default function Register_account() {
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleChange}
-                                        className={`${inputClasses} flex-grow`}
+                                        className={`${inputClasses} flex-grow h-[52px]`}
                                         style={{ direction: "rtl" }}
                                     />
-                                    <div className="w-1/3 min-w-[150px]">
+                                    <div className="w-1/3 min-w-[180px]">
                                         <select
-                                            dir="rtl"
                                             ref={countrySelectDialRef}
-                                            value={selectedCountryDial}
-                                            onChange={(e) => handleCountryDial(e.target.value)}
-                                            className="w-full rounded-[5px]"
-                                        >
-                                            <option value="" disabled>
-                                                رمز الدولة
-                                            </option>
-                                            {countries.map((country) => (
-                                                <option
-                                                    key={`${country.code}-${country.dial}`}
-                                                    value={country.dial}
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: `<span class="fi fi-${country.code} ms-2"></span> ${country.name} (${country.dial})`,
-                                                    }}
-                                                />
-                                            ))}
-                                        </select>
+                                            className="w-full rounded-[5px] text-xl md:text-[25px]"
+                                        ></select>
                                     </div>
                                 </div>
+                                {phoneError && <span className="text-[#8B151A] text-[16px] mt-1 block">{phoneError}</span>}
                             </div>
 
                             <div className="mb-4">
@@ -528,11 +608,6 @@ export default function Register_account() {
                                     className={inputClasses}
                                     style={{ direction: "ltr" }}
                                 />
-                                {errorEmail && (
-                                    <span className="block text-[#8B151A] text-[16px] mt-1" style={{ direction: "ltr" }}>
-                                        {errorEmail}
-                                    </span>
-                                )}
                             </div>
 
                             <div className="mb-4">
@@ -547,7 +622,7 @@ export default function Register_account() {
                                     style={{ direction: "ltr" }}
                                 />
                                 {errorEmail && (
-                                    <span className="block text-[#8B151A] text-[16px] mt-1" style={{ direction: "ltr" }}>
+                                    <span className="block text-[#8B151A] text-[16px] mt-1" style={{ direction: "rtl" }}>
                                         {errorEmail}
                                     </span>
                                 )}
@@ -561,10 +636,7 @@ export default function Register_account() {
                                         name="password"
                                         required
                                         value={formData.password}
-                                        onChange={(e) => {
-                                            handleChange(e);
-                                            handleInputChange(e);
-                                        }}
+                                        onChange={handleChange}
                                         onPaste={handlePaste}
                                         className={`${inputClasses} pr-[30px]`}
                                         style={{ direction: "ltr" }}
@@ -578,27 +650,21 @@ export default function Register_account() {
                                 </div>
                                 {passwordError && <p className="text-[#8B151A] mt-1">{passwordError}</p>}
 
-                                <ul className="mt-2.5">
-                                    <li className={`text-xl mb-2.5 ${passwordCriteria.length ? "text-green-600" : "text-[#8B151A]"}`}>
-                                        {passwordCriteria.length ? "- تحتوي على 8 أحرف على الأقل." : "- يجب أن تحتوي على 8 أحرف على الأقل."}
+                                <ul className="mt-2.5 text-xl md:text-2xl">
+                                    <li className={passwordCriteria.length ? "text-green-600" : "text-[#8B151A]"}>
+                                        {passwordCriteria.length ? "✓ تحتوي على 8 أحرف على الأقل." : "• يجب أن تحتوي على 8 أحرف على الأقل."}
                                     </li>
-                                    <li className={`text-xl mb-2.5 ${passwordCriteria.uppercase ? "text-green-600" : "text-[#8B151A]"}`}>
-                                        {passwordCriteria.uppercase
-                                            ? "- تحتوي على حرف كبير واحد على الأقل."
-                                            : "- يجب أن تحتوي على حرف كبير واحد على الأقل."}
+                                    <li className={passwordCriteria.uppercase ? "text-green-600" : "text-[#8B151A]"}>
+                                        {passwordCriteria.uppercase ? "✓ تحتوي على حرف كبير واحد على الأقل." : "• يجب أن تحتوي على حرف كبير واحد على الأقل."}
                                     </li>
-                                    <li className={`text-xl mb-2.5 ${passwordCriteria.lowercase ? "text-green-600" : "text-[#8B151A]"}`}>
-                                        {passwordCriteria.lowercase
-                                            ? "- تحتوي على حرف صغير واحد على الأقل."
-                                            : "- يجب أن تحتوي على حرف صغير واحد على الأقل."}
+                                    <li className={passwordCriteria.lowercase ? "text-green-600" : "text-[#8B151A]"}>
+                                        {passwordCriteria.lowercase ? "✓ تحتوي على حرف صغير واحد على الأقل." : "• يجب أن تحتوي على حرف صغير واحد على الأقل."}
                                     </li>
-                                    <li className={`text-xl mb-2.5 ${passwordCriteria.number ? "text-green-600" : "text-[#8B151A]"}`}>
-                                        {passwordCriteria.number ? "- تحتوي على رقم واحد على الأقل." : "- يجب أن تحتوي على رقم واحد على الأقل."}
+                                    <li className={passwordCriteria.number ? "text-green-600" : "text-[#8B151A]"}>
+                                        {passwordCriteria.number ? "✓ تحتوي على رقم واحد على الأقل." : "• يجب أن تحتوي على رقم واحد على الأقل."}
                                     </li>
-                                    <li className={`text-xl mb-2.5 ${passwordCriteria.specialChar ? "text-green-600" : "text-[#8B151A]"}`}>
-                                        {passwordCriteria.specialChar
-                                            ? "- تحتوي على رمز واحد على الأقل (!@#$%^&*~-_.)."
-                                            : "- يجب أن تحتوي على رمز واحد على الأقل (!@#$%^&*~-_.)."}
+                                    <li className={passwordCriteria.specialChar ? "text-green-600" : "text-[#8B151A]"}>
+                                        {passwordCriteria.specialChar ? "✓ تحتوي على رمز خاص واحد على الأقل." : "• يجب أن تحتوي على رمز خاص واحد على الأقل (!@#$%^&*~-_.)."}
                                     </li>
                                 </ul>
                             </div>
@@ -611,10 +677,7 @@ export default function Register_account() {
                                         name="confirmPassword"
                                         required
                                         value={formData.confirmPassword}
-                                        onChange={(e) => {
-                                            handleChange(e);
-                                            handleInputChange(e);
-                                        }}
+                                        onChange={handleChange}
                                         onPaste={handlePaste}
                                         className={`${inputClasses} pr-[30px]`}
                                         style={{ direction: "ltr" }}
@@ -629,54 +692,50 @@ export default function Register_account() {
                             </div>
 
                             <button
-                                className="w-full mt-4 p-2.5 bg-[#8B151A] text-white border-none rounded-[5px] cursor-pointer hover:bg-[#6c1014] transition-colors text-xl md:text-2xl font-bold"
                                 type="submit"
-                                disabled={isRegistering}
+                                disabled={registerMutation.isPending}
+                                className="w-full h-[50px] bg-[#8B151A] text-white font-bold text-xl rounded-[5px] mt-4 hover:bg-[#6e1014] transition-colors disabled:bg-gray-400"
                             >
-                                {isRegistering ? "جاري التسجيل..." : "سجل الآن"}
+                                {registerMutation.isPending ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
                             </button>
                         </form>
                     ) : (
-                        /* نموذج تفعيل البريد الإلكتروني (OTP) */
-                        <form dir="rtl" className="max-w-[600px] mx-auto p-2.5 md:p-5" onSubmit={handleVerification}>
-                            <h2 className="font-bold text-[#8B151A] text-center mb-4 mt-4 text-2xl md:text-3xl">
-                                التحقق من البريد الإلكتروني
+                        <form dir="rtl" className="max-w-[500px] mx-auto p-5 mt-10" onSubmit={handleVerification}>
+                            <h2 className="font-bold text-[#8B151A] text-center mb-4 text-2xl md:text-3xl">
+                                تأكيد البريد الإلكتروني
                             </h2>
-                            <p className="text-center text-gray-700 mb-6 text-lg">
-                                تم إرسال رمز التحقق (OTP) إلى بريدك الإلكتروني: <br />
-                                <span className="font-bold text-[#8B151A]">{formData.email}</span>
+                            <p className="text-center mb-6 text-lg text-gray-700">
+                                تم إرسال رمز التحقق إلى: <strong className="text-[#8B151A]">{formData.email}</strong>
                             </p>
 
                             <div className="mb-4">
-                                <label className={labelClasses}>{requiredStar} رمز التحقق:</label>
+                                <label className={labelClasses}>رمز التحقق (OTP):</label>
                                 <input
                                     type="text"
                                     required
                                     value={verificationCode}
                                     onChange={(e) => setVerificationCode(e.target.value)}
-                                    placeholder="أدخل الرمز هنا"
-                                    className={`${inputClasses} text-center font-mono text-xl tracking-widest`}
-                                    style={{ direction: "ltr" }}
+                                    className={`${inputClasses} text-center tracking-widest text-2xl`}
+                                    maxLength={6}
                                 />
                             </div>
 
                             <button
-                                className="w-full mt-4 p-2.5 bg-[#8B151A] text-white border-none rounded-[5px] cursor-pointer hover:bg-[#6c1014] transition-colors text-xl md:text-2xl font-bold"
                                 type="submit"
-                                disabled={isVerifying}
+                                disabled={registerMutation.isPending}
+                                className="w-full h-[50px] bg-[#8B151A] text-white font-bold text-xl rounded-[5px] mt-2 hover:bg-[#6e1014] transition-colors disabled:bg-gray-400"
                             >
-                                {isVerifying ? "جاري التحقق..." : "تأكيد الرمز"}
+                                {registerMutation.isPending ? "جاري التحقق..." : "تأكيد الحساب"}
                             </button>
 
-                            <div className="mt-4 text-center">
-                                <button
-                                    type="button"
-                                    onClick={handleResetVerification}
-                                    className="text-[#8B151A] font-bold hover:underline text-lg bg-transparent border-none cursor-pointer"
-                                >
-                                    إعادة إرسال رمز التحقق
-                                </button>
-                            </div>
+                            <button
+                                type="button"
+                                disabled={resendOtpMutation.isPending}
+                                onClick={handleResetVerification}
+                                className="w-full text-center text-[#8B151A] font-bold mt-4 hover:underline block disabled:bg-gray-400"
+                            >
+                                {resendOtpMutation.isPending ? "جاري إعادة إرسال الرمز..." : "إعادة إرسال رمز التحقق"}
+                            </button>
                         </form>
                     )}
                 </div>

@@ -1,10 +1,9 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from 'react';
 import { Suspense } from "react";
 import './App.css'
 import AppRouter from "./router/AppRouter";
 import Loading from "./pages/Loading";
-const queryClient = new QueryClient();
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
 
@@ -19,11 +18,14 @@ function App() {
     loadResources();
   }, []);
   return (
-    <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+
       <Suspense fallback={<Loading />}>
         <AppRouter />
       </Suspense>
-    </QueryClientProvider >
+
+
+    </AuthProvider>
   );
 }
 

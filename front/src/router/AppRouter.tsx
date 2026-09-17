@@ -1,5 +1,7 @@
 import { RouterProvider, createBrowserRouter, Navigate } from "react-router-dom";
 import { lazy } from "react";
+// import { useAuth } from "../context/AuthContext.tsx";
+import ProtectedRoute from "../components/ProtectedRoute.tsx";
 
 // import { useAuth } from "../hooks/useAuth.tsx";
 // const About = lazy(() => import("../pages/About/About.tsx"));
@@ -21,7 +23,7 @@ const Support = lazy(() => import("../pages/Support.tsx"));
 // const Fees = lazy(() => import("../pages/Fees/Fees.tsx"));
 const Login = lazy(() => import("../pages/Login.tsx"));
 const Register = lazy(() => import("../pages/Register.tsx"));
-// const Dash_users = lazy(() => import("../pages/Dash_users/Dash_users.tsx"));
+const UserDashboard = lazy(() => import("../pages/UserDashboard.tsx"));
 // const Privacy = lazy(() => import("../pages/Privacy/Privacy.tsx"));
 const Comments = lazy(() => import("../pages/Comments.tsx"));
 // const Term = lazy(() => import("../pages/Term/Term.tsx"));
@@ -112,14 +114,14 @@ export default function AppRouter() {
                 //         </ProtectedRoute>
                 //     ),
                 // },
-                // {
-                //     path: "Dash_users/:userId",
-                //     element: (
-                //         <ProtectedRoute isAuthenticated={isAuth()}>
-                //             <Dash_users />
-                //         </ProtectedRoute>
-                //     ),
-                // },
+                {
+                    path: "user-panel",
+                    element: (
+                        <ProtectedRoute >
+                            <UserDashboard />
+                        </ProtectedRoute>
+                    ),
+                },
             ] // تم إغلاق مصفوفة الـ children هنا
         }, // تم إغلاق مسار / هنا
 

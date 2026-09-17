@@ -1,23 +1,31 @@
-import { useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion"; // استيراد Framer Motion
-import { APIURL } from "../api/apiConfig";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 
+// استيراد الـ Hooks الخاصة بـ React Query (تأكد من تعديل المسار حسب مشروعك)
+import {
+    useForgotPassword,
+    useVerifyResetOtp,
+    useResetPassword,
+} from "../hooks/useAuthQueries"; // عدّل المسار إذا لزم الأمر
+
 const ForgotPassword = () => {
+    const navigate = useNavigate();
+
+    // حالات (States) النماذج
     const [email, setEmail] = useState("");
-    const [, setMessage] = useState("");
-    const [error, setError] = useState("");
-    const [showVerification, setShowVerification] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [showPasswordFields, setShowPasswordFields] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isLoadingReset, setIsLoadingReset] = useState(false);
 
+    // حالات التنقل بين الخطوات
+    const [showVerification, setShowVerification] = useState(false);
+    const [showPasswordFields, setShowPasswordFields] = useState(false);
+
+    // حالات واجهة المستخدم
+    const [error, setError] = useState("");
     const [direction, setDirection] = useState<"rtl" | "ltr">("ltr");
     const [passwordError, setPasswordError] = useState("");
     const [passwordCriteria, setPasswordCriteria] = useState({
@@ -28,24 +36,104 @@ const ForgotPassword = () => {
         specialChar: false,
     });
 
-    const navigate = useNavigate();
+    // جلب دوال React Query
+    const { mutate: forgotPassword, isPending: isForgotPending } = useForgotPassword();
+    const { mutate: verifyOtp, isPending: isVerifyPending } = useVerifyResetOtp();
+    const { mutate: resetPassword, isPending: isResetPending } = useResetPassword();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        setIsLoading(true);
+    // 1. معالجة إرسال البريد الإلكتروني
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            const response = await axios.post(`${APIURL}/forgot-password`, { email });
-            setMessage(response.data.message);
-            setShowVerification(true);
-            setError("");
-        } catch (err: any) {
-            setError(err?.response?.data?.error || "حدث خطأ أثناء العملية.");
-            setMessage("");
-        } finally {
-            setIsLoading(false);
-        }
+        setError("");
+
+        forgotPassword(
+            { email },
+            {
+                onSuccess: (response: any) => {
+                    toast.success(response?.data?.message || "تم إرسال رمز التحقق بنجاح");
+                    setShowVerification(true);
+                },
+                onError: (err: any) => {
+                    setError(err?.response?.data?.error || "حدث خطأ أثناء العملية.");
+                }
+            }
+        );
     };
 
+    // 2. معالجة التحقق من الرمز
+    const handleVerifyCode = (e: React.FormEvent) => {
+        e.preventDefault();
+        setError("");
+
+        verifyOtp(
+            { email, otp: verificationCode },
+            {
+                onSuccess: (response: any) => {
+                    toast.success(response?.data?.message || "تم التحقق بنجاح");
+                    setShowVerification(false);
+                    setShowPasswordFields(true);
+                },
+                onError: (err: any) => {
+                    setError(err?.response?.data?.error || "رمز التحقق غير صحيح أو منتهي الصلاحية.");
+                }
+            }
+        );
+    };
+
+    // 3. معالجة إعادة إرسال الرمز
+    const handleResendCode = () => {
+        setError("");
+        forgotPassword(
+            { email },
+            {
+                onSuccess: (response: any) => {
+                    toast.success(response?.data?.message || "تم إعادة إرسال الرمز بنجاح");
+                },
+                onError: (err: any) => {
+                    setError(err?.response?.data?.error || "حدث خطأ أثناء إعادة إرسال الرمز.");
+                }
+            }
+        );
+    };
+
+    // 4. معالجة إعادة تعيين كلمة المرور
+    const handleResetPassword = (e: React.FormEvent) => {
+        e.preventDefault();
+        setError("");
+        setPasswordError("");
+
+        if (newPassword !== confirmPassword) {
+            setError("كلمة المرور غير متطابقة.");
+            return;
+        }
+
+        if (!Object.values(passwordCriteria).every(Boolean)) {
+            setPasswordError(
+                "يجب أن تحتوي كلمة السر على ٨ أحرف على الأقل، حرف كبير واحد، حرف صغير واحد، رقم واحد، ورمز واحد."
+            );
+            return;
+        }
+
+        resetPassword(
+            {
+                email,
+                otp: verificationCode,
+                password: newPassword,
+                password_confirmation: confirmPassword
+            },
+            {
+                onSuccess: (response: any) => {
+                    toast.success(response?.data?.message || "تم تغيير كلمة المرور بنجاح");
+                    navigate("/home");
+                },
+                onError: (err: any) => {
+                    setError(err?.response?.data?.error || "حدث خطأ أثناء إعادة تعيين كلمة المرور.");
+                }
+            }
+        );
+    };
+
+    // دوال مساعدة
     const handlePast = (e: React.ClipboardEvent<HTMLInputElement>) => {
         e.preventDefault();
         toast.warning("لا يُسمح بلصق النص هنا.");
@@ -54,41 +142,6 @@ const ForgotPassword = () => {
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setDirection(/[\u0600-\u06FF]/.test(value) ? "rtl" : "ltr");
-    };
-
-    const handleResendCode = async () => {
-        setIsLoadingReset(true);
-        try {
-            const response = await axios.post(`${APIURL}/resend-otp`, { email });
-            setMessage(response.data.message);
-            toast.success("تم إعادة إرسال الرمز بنجاح");
-            setError("");
-        } catch (err: any) {
-            setError(err?.response?.data?.error || "حدث خطأ أثناء العملية.");
-            setMessage("");
-        } finally {
-            setIsLoadingReset(false);
-        }
-    };
-
-    const handleVerifyCode = async (e: React.FormEvent) => {
-        setIsLoading(true);
-        e.preventDefault();
-        try {
-            const response = await axios.post(`${APIURL}/verify-reset-otp`, {
-                email,
-                otp: verificationCode,
-            });
-            setMessage(response.data.message);
-            setError("");
-            setShowVerification(false);
-            setShowPasswordFields(true);
-        } catch (err: any) {
-            setError(err?.response?.data?.error || "حدث خطأ أثناء التحقق.");
-            setMessage("");
-        } finally {
-            setIsLoading(false);
-        }
     };
 
     const validatePassword = (password: string) => {
@@ -101,63 +154,33 @@ const ForgotPassword = () => {
         });
     };
 
-    const handleResetPassword = async (e: React.FormEvent) => {
-        setIsLoading(true);
-        e.preventDefault();
-        if (newPassword !== confirmPassword) {
-            setError("كلمة المرور غير متطابقة.");
-            setIsLoading(false);
-            return;
-        }
-
-        if (!Object.values(passwordCriteria).every(Boolean)) {
-            setPasswordError(
-                "يجب أن تحتوي كلمة السر على ٨ أحرف على الأقل، حرف كبير واحد، حرف صغير واحد، رقم واحد، ورمز واحد."
-            );
-            setIsLoading(false);
-            return;
-        }
-
-        try {
-            const response = await axios.post(`${APIURL}/reset-password`, {
-                email,
-                otp: verificationCode,
-                password: newPassword,
-                password_confirmation: confirmPassword,
-            });
-            toast.success("تم تغيير كلمة المرور بنجاح");
-            setMessage(response.data.message);
-            navigate("/");
-            setError("");
-        } catch (err: any) {
-            setError(err?.response?.data?.error || "حدث خطأ أثناء إعادة تعيين كلمة المرور.");
-            setMessage("");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    // إعدادات الأنيميشن لـ Framer Motion
+    // إعدادات الأنيميشن والتصميم
     const pageVariants = {
         initial: { opacity: 0, y: 20 },
         animate: { opacity: 1, y: 0, transition: { duration: 0.4 } },
         exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
     };
 
-    const inputClasses =
-        "w-full px-4 py-3 mt-2 mb-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#8B151A] focus:border-[#8B151A] transition-all bg-[#f5f7f7]";
-    const labelClasses = "block text-[#1A1A1A] font-bold text-lg";
-    const buttonClasses =
-        "w-full py-3 bg-[#8B151A] text-white text-xl font-bold rounded-lg hover:bg-[#6c1014] transition-colors disabled:opacity-70 disabled:cursor-not-allowed";
-
+    const inputClasses = "w-full px-4 py-3 mt-2 mb-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#8B151A] text-2xl focus:border-[#8B151A] transition-all bg-[#f5f7f7]";
+    const labelClasses = "block text-[#1A1A1A] font-bold text-2xl";
+    const buttonClasses = "w-full py-3 bg-[#8B151A] text-white text-3xl font-bold rounded-lg hover:bg-[#6c1014] transition-colors disabled:opacity-70 disabled:cursor-not-allowed";
+    useEffect(() => {
+        if (showVerification === true) {
+            // قفز ناعم (Smooth) لأعلى الصفحة
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth", // يجعل الحركة سلسة وليست قفزة مفاجئة
+            });
+        }
+    }, [showVerification]);
     return (
-        <div dir="rtl" className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-            <div className="w-full max-w-lg bg-white p-6 md:p-8 rounded-xl shadow-lg border-t-4 border-t-[#C5A059]">
+        <div dir="rtl" className=" flex items-center justify-center bg-gray-50 p-4 py-30">
+            <div className="w-full max-w-xl bg-white p-6 md:py-10 md:p-8 rounded-xl shadow-lg border-t-4 border-t-[#C5A059]">
 
                 {/* Header */}
                 <div className="flex items-center justify-center gap-3 mb-8">
                     <RiLockPasswordFill className="text-4xl text-[#8B151A]" />
-                    <h2 className="text-3xl font-bold text-[#8B151A]">نسيت كلمة المرور</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold text-[#8B151A]">نسيت كلمة المرور</h2>
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -186,8 +209,8 @@ const ForgotPassword = () => {
                                     placeholder="أدخل بريدك الإلكتروني"
                                 />
                             </div>
-                            <button type="submit" disabled={isLoading} className={buttonClasses}>
-                                {isLoading ? "جاري إرسال رمز التحقق..." : "إرسال الرمز"}
+                            <button type="submit" disabled={isForgotPending} className={buttonClasses}>
+                                {isForgotPending ? "جاري إرسال رمز التحقق..." : "إرسال الرمز"}
                             </button>
                         </motion.form>
                     )}
@@ -219,16 +242,16 @@ const ForgotPassword = () => {
                                 />
                             </div>
                             <div className="flex flex-col gap-3">
-                                <button type="submit" disabled={isLoading} className={buttonClasses}>
-                                    {isLoading ? "جاري التحقق..." : "تحقق"}
+                                <button type="submit" disabled={isVerifyPending} className={buttonClasses}>
+                                    {isVerifyPending ? "جاري التحقق..." : "تحقق"}
                                 </button>
                                 <button
                                     type="button"
-                                    disabled={isLoadingReset}
+                                    disabled={isForgotPending}
                                     onClick={handleResendCode}
-                                    className="w-full py-3 bg-transparent border-2 border-[#C5A059] text-[#C5A059] text-lg font-bold rounded-lg hover:bg-[#C5A059] hover:text-white transition-colors disabled:opacity-70"
+                                    className="w-full py-3 bg-transparent border-2 border-[#C5A059] text-[#C5A059] text-3xl font-bold rounded-lg hover:bg-[#C5A059] hover:text-white transition-colors disabled:opacity-70"
                                 >
-                                    {isLoadingReset ? "جاري إعادة إرسال الرمز..." : "إعادة إرسال الرمز"}
+                                    {isForgotPending ? "جاري إعادة إرسال الرمز..." : "إعادة إرسال الرمز"}
                                 </button>
                             </div>
                         </motion.form>
@@ -261,7 +284,7 @@ const ForgotPassword = () => {
                                 />
 
                                 {/* شروط كلمة المرور */}
-                                <ul className="mt-2 text-sm space-y-1 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <ul className="mt-2 text-xl space-y-1 bg-gray-50 p-3 rounded-lg border border-gray-200">
                                     <li className={passwordCriteria.length ? "text-green-600 font-medium" : "text-[#8B151A]"}>
                                         {passwordCriteria.length ? "✓ تحتوي على 8 أحرف على الأقل." : "✗ يجب أن تحتوي على 8 أحرف على الأقل."}
                                     </li>
@@ -300,8 +323,8 @@ const ForgotPassword = () => {
                                 />
                             </div>
 
-                            <button type="submit" disabled={isLoading} className={buttonClasses}>
-                                {isLoading ? "جاري إعادة تعيين كلمة المرور..." : "تأكيد كلمة المرور"}
+                            <button type="submit" disabled={isResetPending} className={buttonClasses}>
+                                {isResetPending ? "جاري إعادة تعيين كلمة المرور..." : "تأكيد كلمة المرور"}
                             </button>
                         </motion.form>
                     )}

@@ -1,59 +1,31 @@
-import  { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // اضبط المسار بحسب مشروعك
+import { Loader2 } from "lucide-react";
 
 type Props = {
     children: ReactNode;
+    redirectTo?: string;
 };
 
-export default function ProtectedRoute({ children }: Props) {
-    const [auth, setAuth] = useState<boolean>(() => {
-        return sessionStorage.getItem("auth") === "true";
-    });
-
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-
-    const login = () => {
-        if (username === "Sawa" && password === "Sawa_2424") {
-            sessionStorage.setItem("auth", "true");
-            setAuth(true);
-        } else {
-            alert("Wrong credentials");
-        }
-    };
-
-    if (!auth) {
+export default function ProtectedRoute({
+    children,
+    redirectTo = "/home/Login_users"
+}: Props) {
+    const { isAuthenticated, isLoading } = useAuth();
+    // 1. التوقف هنا حتى تنتهي عملية جلب بيانات المستخدم من السيرفر
+    if (isLoading) {
         return (
-            <div 
-                dir="ltr" 
-                className="flex h-screen items-center justify-center bg-[#111] text-white"
-            >
-                <div className="flex w-[350px] flex-col gap-2.5 rounded-[10px] bg-[#222] p-[30px]">
-                    <h2 className="text-xl font-bold">Restricted Area 🔐</h2>
-
-                    <input
-                        className="rounded-[5px] border-none bg-white p-2.5 text-black outline-none"
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-
-                    <input
-                        className="rounded-[5px] border-none bg-white p-2.5 text-black outline-none"
-                        placeholder="Password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-
-                    <button 
-                        className="cursor-pointer rounded-[5px] border-none bg-white p-2.5 text-black font-semibold hover:bg-gray-200 transition-colors" 
-                        onClick={login}
-                    >
-                        Login
-                    </button>
-                </div>
+            <div className="min-h-screen flex flex-col items-center justify-center bg-[#1A1A1A] text-[#C5A059]">
+                <Loader2 className="w-10 h-10 animate-spin mb-3" />
+                <p>جارٍ التحقق من الجلسة...</p>
             </div>
         );
+    }
+
+    // 2. إذا انتهى التحميل وكان المستخدم غير مسجل، قم بالتوجيه
+    if (!isAuthenticated) {
+        return <Navigate to={redirectTo} replace />;
     }
 
     return <>{children}</>;

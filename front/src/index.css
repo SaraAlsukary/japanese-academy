@@ -22,3 +22,18 @@
   font-family: "Scheherazade New", serif;
   font-style: normal;
 }
+
+.choices__list--single .choices__item::placeholder {
+  font-size: 19px;
+}
+
+.choices__item--selectable::after {
+  display: none !important;
+}
+
+.Toastify__toast {
+  direction: rtl;
+  font-weight: bold;
+  font-family: "Scheherazade New", serif;
+  text-align: right;
+}
