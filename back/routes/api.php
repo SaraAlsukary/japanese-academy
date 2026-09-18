@@ -18,7 +18,9 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/verify-reset-otp', [AuthController::class, 'verifyResetOtp']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-
+Route::get('/', function () {
+    return response()->json(['status' => 'API is working!']);
+});
 
 // profile
 Route::get('/profile', [AuthController::class,'profile'])->middleware('auth:sanctum');
