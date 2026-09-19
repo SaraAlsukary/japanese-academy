@@ -1,5 +1,6 @@
 import React from "react";
-import { User, BookOpen, TrendingUp, CalendarDays } from "lucide-react";
+// import { User, BookOpen, TrendingUp, CalendarDays } from "lucide-react";
+import { User, } from "lucide-react";
 
 export type TabType = "profile" | "courses" | "progress" | "schedule";
 
@@ -12,7 +13,7 @@ interface TabsNavigationProps {
 export const TabsNavigation: React.FC<TabsNavigationProps> = ({
   activeTab,
   setActiveTab,
-  coursesCount,
+  // coursesCount,
 }) => {
   return (
     <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-gray-200 no-scrollbar">
@@ -23,7 +24,7 @@ export const TabsNavigation: React.FC<TabsNavigationProps> = ({
         icon={<User className="w-4 h-4" />}
         label="الملف الشخصي"
       />
-      <TabButton
+      {/* <TabButton
         id="courses"
         activeTab={activeTab}
         onClick={() => setActiveTab("courses")}
@@ -45,7 +46,7 @@ export const TabsNavigation: React.FC<TabsNavigationProps> = ({
         icon={<CalendarDays className="w-4 h-4" />}
         label="جدول الدروس المباشرة"
         badge="مباشر"
-      />
+      /> */}
     </div>
   );
 };
@@ -70,19 +71,17 @@ function TabButton({
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-3 rounded-xl font-bold text-xl flex items-center gap-2 transition-all whitespace-nowrap relative ${
-        isActive
+      className={`px-4 py-3 rounded-xl font-bold text-xl flex items-center gap-2 transition-all whitespace-nowrap relative ${isActive
           ? "bg-brand-red text-white shadow-md shadow-red-900/10"
           : "bg-white text-gray-600 hover:bg-gray-100 hover:text-gray-900 border border-gray-200/80"
-      }`}
+        }`}
     >
       {icon}
       <span>{label}</span>
       {badge !== undefined && (
         <span
-          className={`text-xl px-2 py-0.5 rounded-full font-bold ${
-            isActive ? "bg-white text-brand-red" : "bg-red-100 text-brand-red"
-          }`}
+          className={`text-xl px-2 py-0.5 rounded-full font-bold ${isActive ? "bg-white text-brand-red" : "bg-red-100 text-brand-red"
+            }`}
         >
           {badge}
         </span>

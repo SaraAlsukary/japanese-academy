@@ -32,8 +32,8 @@ jobs:
             
             # 4. تنفيذ أوامر Laravel داخل حاوية الخلفية الجديدة (ja_backend)
             # ربط مجلد التخزين (مهم جداً لمكتبة Spatie Media Library)
-            docker compose exec -T ja_backend php artisan migrate:fresh --seed --force
-            docker compose exec -T ja_backend php artisan storage:link
+            # docker compose exec -T ja_backend php artisan migrate:fresh --seed --force
+            # docker compose exec -T ja_backend php artisan storage:link
             docker compose exec -T ja_backend php artisan config:cache
             docker compose exec -T ja_backend php artisan route:cache
             docker compose exec -T ja_backend php artisan view:cache

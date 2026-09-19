@@ -166,7 +166,7 @@ export default function UserDashboard() {
         {/* الهيدر الرئيسي */}
         <DashboardHeader
           userData={userData}
-          currentLevel={mockStudentData.currentLevel}
+          currentLevel={userData.japanese_level}
           isUpdatingAvatar={isUpdatingAvatar}
           onAvatarChange={handleAvatarChange}
           onOpenEditModal={() => setIsEditModalOpen(true)}
