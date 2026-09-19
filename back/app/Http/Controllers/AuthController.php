@@ -254,7 +254,59 @@ class AuthController extends Controller
             'message' => 'تم التحقق من رمز إعادة التعيين بنجاح.'
         ]);
     }
+// 🔹 تعديل البيانات الشخصية
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
 
+        $validated = $request->validate([
+            'first_name'      => 'required|string|max:255',
+            'last_name'       => 'required|string|max:255',
+            'phone'           => 'nullable|string',
+            'age'             => 'nullable|integer|min:1|max:120',
+            'gender'          => 'nullable|in:ذكر,أنثى',
+            'country'         => 'nullable|string',
+            'education_level' => 'nullable|string',
+            'japanese_level'  => 'nullable|string',
+        ], [
+            'first_name.required' => 'الاسم الأول مطلوب.',
+            'last_name.required'  => 'الاسم الأخير مطلوب.',
+            'age.integer'         => 'العمر يجب أن يكون رقماً صحيحاً.',
+        ]);
+
+        $user->update($validated);
+
+        return response()->json([
+            'message' => 'تم تحديث البيانات الشخصية بنجاح.',
+            'user'    => $user->fresh()
+        ]);
+    }
+
+    // 🔹 تحديث الصورة الشخصية
+    public function updateAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ], [
+            'avatar.required' => 'يرجى اختيار صورة.',
+            'avatar.image'    => 'الملف المرفق يجب أن يكون صورة.',
+            'avatar.mimes'    => 'صيغ الصور المسموحة: jpeg, png, jpg, gif, webp.',
+            'avatar.max'      => 'أقصى حجم مسموح للصورة هو 2 ميجابايت.',
+        ]);
+
+        $user = $request->user();
+
+        if ($request->hasFile('avatar')) {
+            // إضافة الصورة لمجموعة avatar (سيقوم تلقائياً باستبدال الصورة القديمة بسبب singleFile)
+            $user->addMediaFromRequest('avatar')
+                 ->toMediaCollection('avatar');
+        }
+
+        return response()->json([
+            'message' => 'تم تحديث الصورة الشخصية بنجاح.',
+            'user'    => $user->fresh()
+        ]);
+    }
     // 🔹 Reset Password
     public function resetPassword(Request $request)
     {
@@ -292,6 +344,25 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'تم إعادة تعيين كلمة المرور بنجاح.'
+        ]);
+    }
+    // 🔹 Delete Account (حذف الحساب)
+    public function deleteAccount(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'المستخدم غير موجود أو غير مسجل الدخول.'], 401);
+        }
+
+        // حذف كافة التوكينات الخاصة بالمستخدم
+        $user->tokens()->delete();
+
+        // حذف حساب المستخدم
+        $user->delete();
+
+        return response()->json([
+            'message' => 'تم حذف الحساب بنجاح.'
         ]);
     }
 }

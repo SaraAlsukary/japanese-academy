@@ -7,6 +7,7 @@ import ProtectedRoute from "../components/ProtectedRoute.tsx";
 // const About = lazy(() => import("../pages/About/About.tsx"));
 // const Dash = lazy(() => import("../pages/Dash/Dash.tsx"));
 // const Date_lisson = lazy(() => import("../pages/Date_lisson/Date_lisson.tsx"));
+const Test = lazy(() => import("../pages/Test.tsx"));
 const Home = lazy(() => import("../pages/Home.tsx")); // تم رفع التعليق هنا لأنك تستخدمه في الأسفل
 const ComingSoon = lazy(() => import("../pages/ComingSoon.tsx")); // تم رفع التعليق هنا لأنك تستخدمه في الأسفل
 // const Login = lazy(() => import("../pages/Login/Login.tsx"));
@@ -119,6 +120,14 @@ export default function AppRouter() {
                     element: (
                         <ProtectedRoute >
                             <UserDashboard />
+                        </ProtectedRoute>
+                    ),
+                },
+                {
+                    path: "test",
+                    element: (
+                        <ProtectedRoute >
+                            <Test />
                         </ProtectedRoute>
                     ),
                 },

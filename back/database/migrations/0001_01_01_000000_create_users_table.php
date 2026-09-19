@@ -19,7 +19,7 @@ return new class extends Migration
                 $table->string('last_name');
                 $table->string('email')->unique();
                 $table->string('password');
-
+                $table->enum('role', ['admin', 'teacher', 'student'])->default('student');
                 // معلومات إضافية
                 $table->string('phone')->nullable();
                 $table->unsignedTinyInteger('age')->nullable();
@@ -36,7 +36,6 @@ return new class extends Migration
                 $table->string('reset_otp')->nullable();
                 $table->timestamp('reset_otp_expires_at')->nullable();
                 
-                $table->string('role')->default('student');
                 $table->timestamp('email_verified_at')->nullable();
                 $table->rememberToken();
                 $table->timestamps();

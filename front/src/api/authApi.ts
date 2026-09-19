@@ -1,4 +1,5 @@
 import { APIURL } from "./apiConfig";
+
 export const authApi = {
     register: (data: any) => APIURL.post('/register', data).then((res) => res.data),
     verifyOtp: (data: any) => APIURL.post('/verify-otp', data).then((res) => res.data),
@@ -9,4 +10,16 @@ export const authApi = {
     resetPassword: (data: any) => APIURL.post('/reset-password', data).then((res) => res.data),
     logout: () => APIURL.post('/logout').then((res) => res.data),
     getProfile: () => APIURL.get('/profile').then((res) => res.data),
+    deleteAccount: () => APIURL.delete('/delete-account').then((res) => res.data),
+    
+    // 🔹 تعديل البيانات الشخصية
+    updateProfile: (data: any) => APIURL.post('/update-profile', data).then((res) => res.data),
+    
+    // 🔹 تحديث الصورة الشخصية (مهم جداً إرسال multipart/form-data)
+    updateAvatar: (formData: FormData) => 
+        APIURL.post('/update-avatar', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }).then((res) => res.data),
 };

@@ -1,15 +1,10 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authApi } from '../api/authApi';
 
 // 1. إنشاء حساب
 export const useRegister = () => {
-  //   const navigate = useNavigate();
   return useMutation({
     mutationFn: authApi.register,
-    onSuccess: () => {
-      // التوجيه لصفحة OTP مع تمرير الإيميل
-      //   navigate('/verify-otp', { state: { email: variables.email } });
-    },
   });
 };
 
@@ -17,7 +12,6 @@ export const useRegister = () => {
 export const useVerifyOtp = () => {
   return useMutation({
     mutationFn: authApi.verifyOtp,
-
   });
 };
 
@@ -25,7 +19,6 @@ export const useVerifyOtp = () => {
 export const useLogin = () => {
   return useMutation({
     mutationFn: authApi.login,
-
   });
 };
 
@@ -47,7 +40,6 @@ export const useForgotPassword = () => {
 export const useVerifyResetOtp = () => {
   return useMutation({
     mutationFn: authApi.verifyResetOtp,
-
   });
 };
 
@@ -55,7 +47,6 @@ export const useVerifyResetOtp = () => {
 export const useResetPassword = () => {
   return useMutation({
     mutationFn: authApi.resetPassword,
-  
   });
 };
 
@@ -63,15 +54,45 @@ export const useResetPassword = () => {
 export const useLogout = () => {
   return useMutation({
     mutationFn: authApi.logout,
-   
   });
 };
 
-// 9. جلب بيانات الملف الشخصي
+// 9. حذف الحساب
+export const useDeleteAccount = () => {
+  return useMutation({
+    mutationFn: authApi.deleteAccount,
+  });
+};
+
+// 10. جلب بيانات الملف الشخصي
 export const useProfile = () => {
   return useQuery({
     queryKey: ['profile'],
     queryFn: authApi.getProfile,
     enabled: !!localStorage.getItem('token'),
+  });
+};
+
+// 11. تعديل البيانات الشخصية
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: authApi.updateProfile,
+    onSuccess: () => {
+      // إعادة جلب بيانات الملف الشخصي لتحديث الواجهة فوراً
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+    },
+  });
+};
+
+// 12. تحديث الصورة الشخصية
+export const useUpdateAvatar = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: authApi.updateAvatar,
+    onSuccess: () => {
+      // إعادة جلب بيانات الملف الشخصي لتظهر الصورة الجديدة مباشرة
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+    },
   });
 };
