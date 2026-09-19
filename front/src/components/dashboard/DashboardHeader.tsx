@@ -76,7 +76,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                 <Sparkles className="w-3.5 h-3.5 text-brand-gold" /> طالب أكاديمي
               </span>
               <span className="bg-amber-100 text-amber-900 px-3 py-0.5 rounded-full text-xs font-bold border border-amber-300">
-                {currentLevel}
+                {currentLevel} المستوى
               </span>
             </div>
 
