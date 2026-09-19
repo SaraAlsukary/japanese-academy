@@ -12,79 +12,82 @@ use App\Mail\SendResetOtpMail;
 class AuthController extends Controller
 {
     // 🔹 Register
-    public function register(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'phone' => 'nullable',
-            'age' => 'nullable|integer',
-            'gender' => 'nullable',
-            'country' => 'nullable',
-            'education_level' => 'nullable',
-            'japanese_level' => 'nullable',
-        ], [
-            'email.required' => 'البريد الإلكتروني مطلوب.',
-            'email.email' => 'يجب كتابة بريد إلكتروني صحيح.',
-            'password.required' => 'كلمة المرور مطلوبة.',
-            'password.min' => 'يجب أن لا تقل كلمة المرور عن 8 أحرف.',
-            'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
-            'first_name.required' => 'الاسم الأول مطلوب.',
-            'last_name.required' => 'الاسم الأخير مطلوب.',
-            'age.integer' => 'العمر يجب أن يكون رقماً.',
-        ]);
+public function register(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+        'first_name' => 'required',
+        'last_name' => 'required',
+        'phone' => 'nullable',
+        'age' => 'nullable|integer',
+        'gender' => 'nullable',
+        'country' => 'nullable',
+        'education_level' => 'nullable',
+        'japanese_level' => 'nullable',
+    ], [
+        'email.required' => 'البريد الإلكتروني مطلوب.',
+        'email.email' => 'يجب كتابة بريد إلكتروني صحيح.',
+        'password.required' => 'كلمة المرور مطلوبة.',
+        'password.min' => 'يجب أن لا تقل كلمة المرور عن 8 أحرف.',
+        'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
+        'first_name.required' => 'الاسم الأول مطلوب.',
+        'last_name.required' => 'الاسم الأخير مطلوب.',
+        'age.integer' => 'العمر يجب أن يكون رقماً.',
+    ]);
 
-        $otp = rand(100000, 999999);
-        $user = User::where('email', $request->email)->first();
+    $otp = (string) rand(100000, 999999);
+    $user = User::where('email', $request->email)->first();
 
-        if ($user) {
-            // المستخدم موجود ومفعل
-            if ($user->email_verified_at) {
-                return response()->json([
-                    'message' => 'البريد الإلكتروني مسجل بالفعل. يمكنك تسجيل الدخول مباشرة.'
-                ], 400);
-            }
-
-            // غير مفعل → تحديث البيانات وإرسال OTP جديد
-            $user->update([
-                'otp' => $otp,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'phone' => $request->phone,
-                'age' => $request->age,
-                'gender' => $request->gender,
-                'country' => $request->country,
-                'education_level' => $request->education_level,
-                'japanese_level' => $request->japanese_level,
-                'otp_expires_at' => now()->addMinutes(10),
-                'password' => Hash::make($request->password),
-            ]);
-        } else {
-            // مستخدم جديد
-            $user = User::create([
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'phone' => $request->phone,
-                'age' => $request->age,
-                'gender' => $request->gender,
-                'country' => $request->country,
-                'education_level' => $request->education_level,
-                'japanese_level' => $request->japanese_level,
-                'otp' => $otp,
-                'otp_expires_at' => now()->addMinutes(10)
-            ]);
+    if ($user) {
+        if ($user->email_verified_at) {
+            return response()->json([
+                'message' => 'البريد الإلكتروني مسجل بالفعل. يمكنك تسجيل الدخول مباشرة.'
+            ], 400);
         }
 
-        Mail::to($user->email)->send(new SendOtpMail($otp));
-
-        return response()->json([
-            'message' => 'تم تسجيل حسابك بنجاح، يرجى إدخال رمز التحقق لتأكيد الحساب.'
+        $user->update([
+            'otp' => $otp,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone' => $request->phone,
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'country' => $request->country,
+            'education_level' => $request->education_level,
+            'japanese_level' => $request->japanese_level,
+            'otp_expires_at' => now()->addMinutes(10),
+            'password' => Hash::make($request->password),
+        ]);
+    } else {
+        $user = User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone' => $request->phone,
+            'age' => $request->age,
+            'gender' => $request->gender,
+            'country' => $request->country,
+            'education_level' => $request->education_level,
+            'japanese_level' => $request->japanese_level,
+            'otp' => $otp,
+            'otp_expires_at' => now()->addMinutes(10)
         ]);
     }
+
+    try {
+        Mail::to($user->email)->send(new SendOtpMail($otp));
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'تم إنشاء الحساب ولكن تعذر إرسال بريد التفعيل: ' . $e->getMessage()
+        ], 500);
+    }
+
+    return response()->json([
+        'message' => 'تم تسجيل حسابك بنجاح، يرجى إدخال رمز التحقق لتأكيد الحساب.'
+    ]);
+}
 
     // 🔹 Verify OTP
     public function verifyOtp(Request $request)

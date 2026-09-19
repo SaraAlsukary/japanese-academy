@@ -24,6 +24,8 @@ class User extends Authenticatable implements HasMedia
         'gender',
         'age',
         'country',
+        'reset_otp_expires_at',
+        'reset_otp',
         'otp',
         'otp_expires_at',
         'email_verified_at'
@@ -32,6 +34,7 @@ class User extends Authenticatable implements HasMedia
     protected $hidden = [
         'password',
         'otp',
+        'reset_otp',
         'remember_token',
         'media', // إخفاء كائن الميديا الخام لتخفيف الحجم
     ];
