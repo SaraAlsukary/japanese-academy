@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
-    && docker-php-ext-install pdo_mysql zip
+    && docker-php-ext-install pdo_mysql zip exif
 
 # تفعيل mod_rewrite الخاص بـ Apache
 RUN a2enmod rewrite
