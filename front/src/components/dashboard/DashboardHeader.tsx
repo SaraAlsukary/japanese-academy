@@ -31,7 +31,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
 
       <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
         <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-right">
-          
+
           {/* الصورة الشخصية */}
           <div
             className="relative group cursor-pointer shrink-0"
@@ -44,7 +44,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               accept="image/*"
               className="hidden"
             />
-            
+
             {userData.avatar_url ? (
               <img
                 src={userData.avatar_url}
@@ -76,7 +76,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                 <Sparkles className="w-3.5 h-3.5 text-brand-gold" /> طالب أكاديمي
               </span>
               <span className="bg-amber-100 text-amber-900 px-3 py-0.5 rounded-full text-xs font-bold border border-amber-300">
-                {currentLevel} المستوى
+                المستوى   {currentLevel}
               </span>
             </div>
 
