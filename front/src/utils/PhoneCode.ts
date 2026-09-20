@@ -1,73 +1,107 @@
-// 🌍 بيانات مفاتيح الاتصال مع كود البلد (ISO) لجلب الصورة
-export const phoneCodesData = [
-    { code: '+963', iso: 'sy' }, // سوريا
-    { code: '+20', iso: 'eg' },  // مصر
-    { code: '+966', iso: 'sa' }, // السعودية
-    { code: '+961', iso: 'lb' }, // لبنان
-    { code: '+962', iso: 'jo' }, // الأردن
-    { code: '+971', iso: 'ae' }, // الإمارات
-    { code: '+212', iso: 'ma' }, // المغرب
-    { code: '+213', iso: 'dz' }, // الجزائر
-    { code: '+216', iso: 'tn' }, // تونس
-    { code: '+964', iso: 'iq' }, // العراق
-    { code: '+965', iso: 'kw' }, // الكويت
-    { code: '+968', iso: 'om' }, // عمان
-    { code: '+974', iso: 'qa' }, // قطر
-    { code: '+973', iso: 'bh' }, // البحرين
-    { code: '+967', iso: 'ye' }, // اليمن
-    { code: '+970', iso: 'ps' }, // فلسطين
-    { code: '+218', iso: 'ly' }, // ليبيا
-    { code: '+249', iso: 'sd' }, // السودان
-    { code: '+222', iso: 'mr' }, // موريتانيا
-    { code: '+252', iso: 'so' }, // الصومال
-    { code: '+253', iso: 'dj' }, // جيبوتي
-    { code: '+269', iso: 'km' }, // جزر القمر
-    { code: '+81', iso: 'jp' },  // اليابان
-    { code: '+86', iso: 'cn' },  // الصين
-    { code: '+82', iso: 'kr' },  // كوريا الجنوبية
-    { code: '+850', iso: 'kp' }, // كوريا الشمالية
-    { code: '+33', iso: 'fr' },  // فرنسا
-    { code: '+34', iso: 'es' },  // إسبانيا
-    { code: '+1', iso: 'us' },   // أمريكا
-    { code: '+44', iso: 'gb' },  // بريطانيا
-    { code: '+1', iso: 'ca' },   // كندا
-    { code: '+49', iso: 'de' },  // ألمانيا
-    { code: '+39', iso: 'it' },  // إيطاليا
-    { code: '+90', iso: 'tr' },  // تركيا
-    { code: '+98', iso: 'ir' },  // إيران
-    { code: '+91', iso: 'in' },  // الهند
-    { code: '+92', iso: 'pk' },  // باكستان
-    { code: '+880', iso: 'bd' }, // بنجلاديش
-    { code: '+62', iso: 'id' },  // إندونيسيا
-    { code: '+60', iso: 'my' },  // ماليزيا
-    { code: '+65', iso: 'sg' },  // سنغافورة
-    { code: '+63', iso: 'ph' },  // الفلبين
-    { code: '+66', iso: 'th' },  // تايلاند
-    { code: '+84', iso: 'vn' },  // فيتنام
-    { code: '+7', iso: 'ru' },   // روسيا
-    { code: '+380', iso: 'ua' }, // أوكرانيا
-    { code: '+55', iso: 'br' },  // البرازيل
-    { code: '+54', iso: 'ar' },  // الأرجنتين
-    { code: '+52', iso: 'mx' },  // المكسيك
-    { code: '+57', iso: 'co' },  // كولومبيا
-    { code: '+56', iso: 'cl' },  // تشيلي
-    { code: '+51', iso: 'pe' },  // بيرو
-    { code: '+61', iso: 'au' },  // أستراليا
-    { code: '+64', iso: 'nz' },  // نيوزيلندا
-    { code: '+27', iso: 'za' },  // جنوب أفريقيا
-    { code: '+234', iso: 'ng' }, // نيجيريا
-    { code: '+254', iso: 'ke' }, // كينيا
-    { code: '+251', iso: 'et' }, // إثيوبيا
-    { code: '+30', iso: 'gr' },  // اليونان
-    { code: '+31', iso: 'nl' },  // هولندا
-    { code: '+32', iso: 'be' },  // بلجيكا
-    { code: '+41', iso: 'ch' },  // سويسرا
-    { code: '+43', iso: 'at' },  // النمسا
-    { code: '+46', iso: 'se' },  // السويد
-    { code: '+47', iso: 'no' },  // النرويج
-    { code: '+45', iso: 'dk' },  // الدنمارك
-    { code: '+358', iso: 'fi' }, // فنلندا
-    { code: '+353', iso: 'ie' }, // أيرلندا
-    { code: '+351', iso: 'pt' }, // البرتغال
-    { code: '+48', iso: 'pl' }   // بولندا
+export interface CountryData {
+    code: string;
+    name: string;
+    dial: string;
+}
+
+export const countries: CountryData[] = [
+    // ==================== جميع الدول العربية (22 دولة) ====================
+    { code: "sy", name: "سوريا", dial: "+963" },
+    { code: "jo", name: "الأردن", dial: "+962" },
+    { code: "iq", name: "العراق", dial: "+964" },
+    { code: "lb", name: "لبنان", dial: "+961" },
+    { code: "ps", name: "فلسطين", dial: "+970" },
+    { code: "ye", name: "اليمن", dial: "+967" },
+    { code: "kw", name: "الكويت", dial: "+965" },
+    { code: "qa", name: "قطر", dial: "+974" },
+    { code: "bh", name: "البحرين", dial: "+973" },
+    { code: "om", name: "عُمان", dial: "+968" },
+    { code: "eg", name: "مصر", dial: "+20" },
+    { code: "sd", name: "السودان", dial: "+249" },
+    { code: "ly", name: "ليبيا", dial: "+218" },
+    { code: "tn", name: "تونس", dial: "+216" },
+    { code: "dz", name: "الجزائر", dial: "+213" },
+    { code: "ma", name: "المغرب", dial: "+212" },
+    { code: "mr", name: "موريتانيا", dial: "+222" },
+    { code: "so", name: "الصومال", dial: "+252" },
+    { code: "dj", name: "جيبوتي", dial: "+253" },
+    { code: "km", name: "جزر القمر", dial: "+269" },
+    { code: "sa", name: "المملكة العربية السعودية", dial: "+966" },
+    { code: "ae", name: "الإمارات العربية المتحدة", dial: "+971" },
+    // ==================== أوروبا ====================
+    { code: "tr", name: "تركيا", dial: "+90" },
+    { code: "gb", name: "المملكة المتحدة", dial: "+44" },
+    { code: "de", name: "ألمانيا", dial: "+49" },
+    { code: "fr", name: "فرنسا", dial: "+33" },
+    { code: "it", name: "إيطاليا", dial: "+39" },
+    { code: "es", name: "إسبانيا", dial: "+34" },
+    { code: "ru", name: "روسيا", dial: "+7" },
+    { code: "nl", name: "هولندا", dial: "+31" },
+    { code: "be", name: "بلجيكا", dial: "+32" },
+    { code: "ch", name: "سويسرا", dial: "+41" },
+    { code: "at", name: "النمسا", dial: "+43" },
+    { code: "se", name: "السويد", dial: "+46" },
+    { code: "no", name: "النرويج", dial: "+47" },
+    { code: "dk", name: "الدنمارك", dial: "+45" },
+    { code: "fi", name: "فنلندا", dial: "+358" },
+    { code: "pl", name: "بولندا", dial: "+48" },
+    { code: "gr", name: "اليونان", dial: "+30" },
+    { code: "pt", name: "البرتغال", dial: "+351" },
+    { code: "ie", name: "أيرلندا", dial: "+353" },
+    { code: "cz", name: "التشيك", dial: "+420" },
+    { code: "ro", name: "رومانيا", dial: "+40" },
+    { code: "hu", name: "المجر", dial: "+36" },
+    { code: "ua", name: "أوكرانيا", dial: "+380" },
+
+    // ==================== آسيا والأوقيانوسيا ====================
+    { code: "jp", name: "اليابان", dial: "+81" },
+    { code: "cn", name: "الصين", dial: "+86" },
+    { code: "kr", name: "كوريا الجنوبية", dial: "+82" },
+    { code: "in", name: "الهند", dial: "+91" },
+    { code: "pk", name: "باكستان", dial: "+92" },
+    { code: "bd", name: "بنجلاديش", dial: "+880" },
+    { code: "id", name: "إندونيسيا", dial: "+62" },
+    { code: "my", name: "ماليزيا", dial: "+60" },
+    { code: "sg", name: "سنغافورة", dial: "+65" },
+    { code: "th", name: "تايلاند", dial: "+66" },
+    { code: "vn", name: "فيتنام", dial: "+84" },
+    { code: "ph", name: "الفلبين", dial: "+63" },
+    { code: "ir", name: "إيران", dial: "+98" },
+    { code: "af", name: "أفغانستان", dial: "+93" },
+    { code: "az", name: "أذربيجان", dial: "+994" },
+    { code: "ge", name: "جورجيا", dial: "+995" },
+    { code: "kz", name: "كازاخستان", dial: "+7" },
+    { code: "uz", name: "أوزبكستان", dial: "+998" },
+    { code: "au", name: "أستراليا", dial: "+61" },
+    { code: "nz", name: "نيوزيلندا", dial: "+64" },
+
+    // ==================== الأمريكتان ====================
+    { code: "us", name: "الولايات المتحدة الأمريكية", dial: "+1" },
+    { code: "ca", name: "كندا", dial: "+1" },
+    { code: "mx", name: "المكسيك", dial: "+52" },
+    { code: "br", name: "البرازيل", dial: "+55" },
+    { code: "ar", name: "الأرجنتين", dial: "+54" },
+    { code: "co", name: "كولومبيا", dial: "+57" },
+    { code: "cl", name: "تشيلي", dial: "+56" },
+    { code: "pe", name: "بيرو", dial: "+51" },
+    { code: "ve", name: "فنزويلا", dial: "+58" },
+    { code: "ec", name: "الإكوادور", dial: "+593" },
+    { code: "bo", name: "بوليفيا", dial: "+591" },
+    { code: "py", name: "باراغواي", dial: "+595" },
+    { code: "uy", name: "أوروغواي", dial: "+598" },
+    { code: "cu", name: "كوبا", dial: "+53" },
+    { code: "cr", name: "كوستاريكا", dial: "+506" },
+    { code: "pa", name: "بنما", dial: "+507" },
+
+    // ==================== إفريقيا ====================
+    { code: "za", name: "جنوب أفريقيا", dial: "+27" },
+    { code: "ng", name: "نيجيريا", dial: "+234" },
+    { code: "ke", name: "كينيا", dial: "+254" },
+    { code: "gh", name: "غانا", dial: "+233" },
+    { code: "et", name: "إثيوبيا", dial: "+251" },
+    { code: "tz", name: "تنزانيا", dial: "+255" },
+    { code: "ug", name: "أوغندا", dial: "+256" },
+    { code: "cm", name: "الكاميرون", dial: "+237" },
+    { code: "ci", name: "ساحل العاج", dial: "+225" },
+    { code: "sn", name: "السنغال", dial: "+221" },
 ];

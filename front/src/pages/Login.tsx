@@ -196,7 +196,7 @@ export default function LoginUser() {
             whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={loginMutation.isPending}
-            className="w-full h-12 bg-brand-red hover:bg-[#731216] text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 flex items-center justify-center text-2xl"
+            className="w-full h-12 cursor-pointer bg-brand-red hover:bg-[#731216] text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 flex items-center justify-center text-2xl"
           >
             {loginMutation.isPending ? (
               <span className="flex items-center gap-2">
@@ -233,7 +233,7 @@ export default function LoginUser() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 type="button"
-                className="w-full h-12 border-2 border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white font-bold rounded-xl transition-all duration-200 text-2xl"
+                className="w-full cursor-pointer h-12 border-2 border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white font-bold rounded-xl transition-all duration-200 text-2xl"
               >
                 إنشاء حساب جديد
               </motion.button>

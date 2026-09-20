@@ -37,3 +37,26 @@
   font-family: "Scheherazade New", serif;
   text-align: right;
 }
+
+/* تغيير حجم الخط لكافة عناصر مكتبة Choices.js */
+.choices {
+  font-size: 1.25rem !important; /* text-xl */
+}
+
+.choices__inner {
+  font-size: 1.25rem !important; /* text-xl */
+  min-height: 52px; /* ليتناسب مع ارتفاع مدخلات النص */
+}
+
+.choices__list--dropdown .choices__item {
+  font-size: 1.25rem !important; /* text-xl لعناصر القائمة المنسدلة */
+}
+
+.choices__input {
+  font-size: 1.25rem !important; /* text-xl لحقل البحث داخل القائمة */
+}
+
+.choices__placeholder {
+  font-size: 1.25rem !important; /* text-xl للـ Placeholder */
+  opacity: 0.8;
+}

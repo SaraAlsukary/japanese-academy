@@ -9,123 +9,10 @@ import { IoEyeSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { isValidPhoneNumber, type CountryCode } from "libphonenumber-js";
 
-export interface CountryData {
-    code: string;
-    name: string;
-    dial: string;
-}
-
-export interface CountryData {
-    code: string;
-    name: string;
-    dial: string;
-}
-
-export const countries: CountryData[] = [
-    // ==================== جميع الدول العربية (22 دولة) ====================
-    { code: "sa", name: "المملكة العربية السعودية", dial: "+966" },
-    { code: "ae", name: "الإمارات العربية المتحدة", dial: "+971" },
-    { code: "kw", name: "الكويت", dial: "+965" },
-    { code: "qa", name: "قطر", dial: "+974" },
-    { code: "bh", name: "البحرين", dial: "+973" },
-    { code: "om", name: "عُمان", dial: "+968" },
-    { code: "eg", name: "مصر", dial: "+20" },
-    { code: "jo", name: "الأردن", dial: "+962" },
-    { code: "sy", name: "سوريا", dial: "+963" },
-    { code: "iq", name: "العراق", dial: "+964" },
-    { code: "lb", name: "لبنان", dial: "+961" },
-    { code: "ps", name: "فلسطين", dial: "+970" },
-    { code: "ye", name: "اليمن", dial: "+967" },
-    { code: "sd", name: "السودان", dial: "+249" },
-    { code: "ly", name: "ليبيا", dial: "+218" },
-    { code: "tn", name: "تونس", dial: "+216" },
-    { code: "dz", name: "الجزائر", dial: "+213" },
-    { code: "ma", name: "المغرب", dial: "+212" },
-    { code: "mr", name: "موريتانيا", dial: "+222" },
-    { code: "so", name: "الصومال", dial: "+252" },
-    { code: "dj", name: "جيبوتي", dial: "+253" },
-    { code: "km", name: "جزر القمر", dial: "+269" },
-
-    // ==================== أوروبا ====================
-    { code: "tr", name: "تركيا", dial: "+90" },
-    { code: "gb", name: "المملكة المتحدة", dial: "+44" },
-    { code: "de", name: "ألمانيا", dial: "+49" },
-    { code: "fr", name: "فرنسا", dial: "+33" },
-    { code: "it", name: "إيطاليا", dial: "+39" },
-    { code: "es", name: "إسبانيا", dial: "+34" },
-    { code: "ru", name: "روسيا", dial: "+7" },
-    { code: "nl", name: "هولندا", dial: "+31" },
-    { code: "be", name: "بلجيكا", dial: "+32" },
-    { code: "ch", name: "سويسرا", dial: "+41" },
-    { code: "at", name: "النمسا", dial: "+43" },
-    { code: "se", name: "السويد", dial: "+46" },
-    { code: "no", name: "النرويج", dial: "+47" },
-    { code: "dk", name: "الدنمارك", dial: "+45" },
-    { code: "fi", name: "فنلندا", dial: "+358" },
-    { code: "pl", name: "بولندا", dial: "+48" },
-    { code: "gr", name: "اليونان", dial: "+30" },
-    { code: "pt", name: "البرتغال", dial: "+351" },
-    { code: "ie", name: "أيرلندا", dial: "+353" },
-    { code: "cz", name: "التشيك", dial: "+420" },
-    { code: "ro", name: "رومانيا", dial: "+40" },
-    { code: "hu", name: "المجر", dial: "+36" },
-    { code: "ua", name: "أوكرانيا", dial: "+380" },
-
-    // ==================== آسيا والأوقيانوسيا ====================
-    { code: "jp", name: "اليابان", dial: "+81" },
-    { code: "cn", name: "الصين", dial: "+86" },
-    { code: "kr", name: "كوريا الجنوبية", dial: "+82" },
-    { code: "in", name: "الهند", dial: "+91" },
-    { code: "pk", name: "باكستان", dial: "+92" },
-    { code: "bd", name: "بنجلاديش", dial: "+880" },
-    { code: "id", name: "إندونيسيا", dial: "+62" },
-    { code: "my", name: "ماليزيا", dial: "+60" },
-    { code: "sg", name: "سنغافورة", dial: "+65" },
-    { code: "th", name: "تايلاند", dial: "+66" },
-    { code: "vn", name: "فيتنام", dial: "+84" },
-    { code: "ph", name: "الفلبين", dial: "+63" },
-    { code: "ir", name: "إيران", dial: "+98" },
-    { code: "af", name: "أفغانستان", dial: "+93" },
-    { code: "az", name: "أذربيجان", dial: "+994" },
-    { code: "ge", name: "جورجيا", dial: "+995" },
-    { code: "kz", name: "كازاخستان", dial: "+7" },
-    { code: "uz", name: "أوزبكستان", dial: "+998" },
-    { code: "au", name: "أستراليا", dial: "+61" },
-    { code: "nz", name: "نيوزيلندا", dial: "+64" },
-
-    // ==================== الأمريكتان ====================
-    { code: "us", name: "الولايات المتحدة الأمريكية", dial: "+1" },
-    { code: "ca", name: "كندا", dial: "+1" },
-    { code: "mx", name: "المكسيك", dial: "+52" },
-    { code: "br", name: "البرازيل", dial: "+55" },
-    { code: "ar", name: "الأرجنتين", dial: "+54" },
-    { code: "co", name: "كولومبيا", dial: "+57" },
-    { code: "cl", name: "تشيلي", dial: "+56" },
-    { code: "pe", name: "بيرو", dial: "+51" },
-    { code: "ve", name: "فنزويلا", dial: "+58" },
-    { code: "ec", name: "الإكوادور", dial: "+593" },
-    { code: "bo", name: "بوليفيا", dial: "+591" },
-    { code: "py", name: "باراغواي", dial: "+595" },
-    { code: "uy", name: "أوروغواي", dial: "+598" },
-    { code: "cu", name: "كوبا", dial: "+53" },
-    { code: "cr", name: "كوستاريكا", dial: "+506" },
-    { code: "pa", name: "بنما", dial: "+507" },
-
-    // ==================== إفريقيا ====================
-    { code: "za", name: "جنوب أفريقيا", dial: "+27" },
-    { code: "ng", name: "نيجيريا", dial: "+234" },
-    { code: "ke", name: "كينيا", dial: "+254" },
-    { code: "gh", name: "غانا", dial: "+233" },
-    { code: "et", name: "إثيوبيا", dial: "+251" },
-    { code: "tz", name: "تنزانيا", dial: "+255" },
-    { code: "ug", name: "أوغندا", dial: "+256" },
-    { code: "cm", name: "الكاميرون", dial: "+237" },
-    { code: "ci", name: "ساحل العاج", dial: "+225" },
-    { code: "sn", name: "السنغال", dial: "+221" },
-];
 import { useRegister, useVerifyOtp, useResendOtp } from "../hooks/useAuthQueries"; // عدل المسار حسب مجلدك
 import { parseApiError } from "../utils/handleApiError";
 import { useAuth } from "../context/AuthContext";
+import { countries } from "../utils/PhoneCode";
 
 export default function Register_account() {
 
@@ -211,6 +98,7 @@ export default function Register_account() {
                 placeholder: true,
                 placeholderValue: "اختر دولة",
                 itemSelectText: '',
+                shouldSort: false,
             });
 
             countryInstance.setChoices(
@@ -243,14 +131,18 @@ export default function Register_account() {
                 placeholder: true,
                 placeholderValue: "رمز الدولة",
                 itemSelectText: '',
-
-
+                shouldSort: false,
             });
 
             dialInstance.setChoices(
                 countries.map((c) => ({
                     value: c.dial,
-                    label: `<span class="fi fi-${c.code} ms-2 text-xl md:text-[20px]"></span> ${c.name} (${c.dial})`,
+                    // تم جعل محتوى العنصر بحجم text-base بدلاً من text-xl مع ضبط اتجاه النص LTR
+                    label: `<div dir="ltr" class="flex items-center gap-1.5 text-base font-medium">
+                        <span class="fi fi-${c.code}"></span> 
+                        <span>${c.name}</span> 
+                        <span class="text-gray-500">(${c.dial})</span>
+                    </div>`,
                     selected: c.dial === selectedCountryDial,
                 })),
                 "value",
@@ -267,7 +159,6 @@ export default function Register_account() {
             cleanups.push(() => countrySelectDialRef.current?.removeEventListener("change", handleDOMChange));
             instances.push(dialInstance);
         }
-
         // باقي عناصر الاختيار (العمر، الجنس، المستوى...)
         const setupChoice = (
             ref: React.RefObject<HTMLSelectElement | null>,
@@ -472,7 +363,7 @@ export default function Register_account() {
         }
     }, [showVerificationField]);
     return (
-        <div className="my-3 mb-5 mx-[12px] xl:mx-[90px] [&_.choices__inner]:bg-[#f5f7f7] [&_.choices__inner]:border-[#C5A059] [&_.choices__inner]:border-2 [&_.choices__inner]:rounded-[5px] [&_.choices__inner]:text-[18px] [&_.choices__inner]:text-[#8B151A] [&_.choices__item]:text-[#8B151A] [&_.choices__list--single_.choices__item.choices__placeholder]:text-[#8B151A]">
+        <div className="my-3 mb-5 mx-[12px] xl:mx-[90px] [&_.choices__inner]:bg-[#f5f7f7] [&_.choices__inner]:border-[#C5A059] [&_.choices__inner]:border-2 [&_.choices__inner]:rounded-[5px] [&_.choices__inner]:text-[20px] [&_.choices__inner]:text-[#8B151A] [&_.choices__item]:text-[#8B151A] [&_.choices__list--single_.choices__item.choices__placeholder]:text-[#8B151A]">
             <div className="flex flex-col lg:flex-row-reverse">
                 {/* القسم الأيسر / Header */}
                 <div className="w-full lg:w-1/2 bg-[#8B151A] p-[5px] max-[600px]:p-[5px] max-lg:flex max-lg:items-center max-lg:justify-center max-lg:flex-wrap">
@@ -517,17 +408,24 @@ export default function Register_account() {
                                 <label className={labelClasses}>{requiredStar} دولة الإقامة:</label>
                                 <select
                                     ref={countrySelectRef}
-                                    className="w-full rounded-[5px] text-xl md:text-[25px]"
+                                    className={`${inputClasses} w-full rounded-[5px] text-xl`}
                                 ></select>
                                 {errorCountry && <span className="text-[#8B151A] text-[16px]">يرجى اختيار دولة.</span>}
                             </div>
 
                             <div className="mb-4">
                                 <label className={labelClasses}>{requiredStar} العمر:</label>
-                                <select dir="rtl" ref={ageSelectRef} name="age" required onChange={handleChange} className="w-full rounded-[5px] text-xl md:text-[25px]">
-                                    <option value="">اختر العمر</option>
+                                <select
+                                    dir="rtl"
+                                    ref={ageSelectRef}
+                                    name="age"
+                                    required
+                                    onChange={handleChange}
+                                    className={`${inputClasses} w-full rounded-[5px] text-xl`}
+                                >
+                                    <option value="" disabled selected hidden className="text-xl">اختر العمر</option>
                                     {Array.from({ length: 100 }, (_, i) => i + 1).map((value) => (
-                                        <option key={value} value={value} className="text-start text-[25px]">
+                                        <option key={value} value={value} className="text-start text-xl">
                                             {value}
                                         </option>
                                     ))}
@@ -536,33 +434,54 @@ export default function Register_account() {
 
                             <div className="mb-4">
                                 <label className={labelClasses}>{requiredStar} الجنس:</label>
-                                <select dir="rtl" ref={genderSelectRef} name="gender" required onChange={handleChange} className="w-full rounded-[5px] text-xl md:text-[25px]">
-                                    <option value="">اختر الجنس</option>
-                                    <option value="ذكر" className="text-start text-[25px]">ذكر</option>
-                                    <option value="أنثى" className="text-start text-[25px]">أنثى</option>
+                                <select
+                                    dir="rtl"
+                                    ref={genderSelectRef}
+                                    name="gender"
+                                    required
+                                    onChange={handleChange}
+                                    className={`${inputClasses} w-full rounded-[5px] text-xl`}
+                                >
+                                    <option value="" disabled selected hidden className="text-xl">اختر الجنس</option>
+                                    <option value="ذكر" className="text-start text-xl">ذكر</option>
+                                    <option value="أنثى" className="text-start text-xl">أنثى</option>
                                 </select>
                             </div>
 
                             <div className="mb-4">
                                 <label className={labelClasses}>{requiredStar} المستوى التعليمي:</label>
-                                <select dir="rtl" ref={educationSelectRef} name="educationLevel" required onChange={handleChange} className="w-full rounded-[5px] text-xl md:text-[25px]">
-                                    <option value="">اختر المستوى التعليمي</option>
-                                    <option value="المرحلة الابتدائية">المرحلة الابتدائية</option>
-                                    <option value="المرحلة الإعدادية">المرحلة الإعدادية</option>
-                                    <option value="المرحلة الثانوية">المرحلة الثانوية</option>
-                                    <option value="مرحلة التعليم الجامعي">مرحلة التعليم الجامعي</option>
-                                    <option value="مرحلة المعاهد المتوسطة">مرحلة المعاهد المتوسطة</option>
-                                    <option value="مرحلة الدراسات العليا (ماجستير)">مرحلة الدراسات العليا (ماجستير)</option>
-                                    <option value="مرحلة الدراسات العليا (دكتوراه)">مرحلة الدراسات العليا (دكتوراه)</option>
+                                <select
+                                    dir="rtl"
+                                    ref={educationSelectRef}
+                                    name="educationLevel"
+                                    required
+                                    onChange={handleChange}
+                                    className={`${inputClasses} w-full rounded-[5px] text-xl`}
+                                >
+                                    <option value="" disabled selected hidden className="text-xl">اختر المستوى التعليمي</option>
+                                    <option value="المرحلة الابتدائية" className="text-start text-xl">المرحلة الابتدائية</option>
+                                    <option value="المرحلة الإعدادية" className="text-start text-xl">المرحلة الإعدادية</option>
+                                    <option value="المرحلة الثانوية" className="text-start text-xl">المرحلة الثانوية</option>
+                                    <option value="مرحلة التعليم الجامعي" className="text-start text-xl">مرحلة التعليم الجامعي</option>
+                                    <option value="مرحلة المعاهد المتوسطة" className="text-start text-xl">مرحلة المعاهد المتوسطة</option>
+                                    <option value="مرحلة الدراسات العليا (ماجستير)" className="text-start text-xl">مرحلة الدراسات العليا (ماجستير)</option>
+                                    <option value="مرحلة الدراسات العليا (دكتوراه)" className="text-start text-xl">مرحلة الدراسات العليا (دكتوراه)</option>
                                 </select>
                             </div>
 
                             <div className="mb-4">
                                 <label className={labelClasses}>{requiredStar} مستوى اللغة اليابانية:</label>
-                                <select dir="rtl" ref={japaneseLevelSelectRef} name="japaneseLevel" required onChange={handleChange} className="w-full rounded-[5px] text-xl md:text-[25px]">
-                                    <option value="">اختر مستوى اللغة اليابانية</option>
+                                <select
+                                    dir="rtl"
+                                    ref={japaneseLevelSelectRef}
+                                    name="japaneseLevel"
+                                    required
+                                    onChange={handleChange}
+                                    className={`${inputClasses} w-full rounded-[5px] text-xl`}
+                                >
+                                    <option value="" disabled selected hidden className="text-xl">اختر مستوى اللغة اليابانية</option>
                                     {Array.from({ length: 16 }, (_, index) => `J${index + 1}`).map((value) => (
-                                        <option key={value} value={value} className="text-start text-[25px]">
+                                        <option key={value} value={value} className="text-start text-xl">
                                             {value}
                                         </option>
                                     ))}
@@ -579,18 +498,22 @@ export default function Register_account() {
                             <div className="mb-4">
                                 <label className={labelClasses}>رقم الهاتف:</label>
                                 <div className="flex gap-2 w-full">
+                                    {/* حقل ادخال رقم الهاتف */}
                                     <input
                                         type="tel"
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleChange}
                                         className={`${inputClasses} flex-grow h-[52px]`}
-                                        style={{ direction: "rtl" }}
+                                        style={{ direction: "ltr" }}
                                     />
-                                    <div className="w-1/3 min-w-[180px]">
+
+                                    {/* حقل رمز الدولة (مصغر وباتجاه LTR) */}
+                                    <div className="w-1/3 min-w-[180px] dir-ltr-dial [&_.choices__inner]:!text-base [&_.choices__item]:!text-base [&_.choices__list--dropdown_.choices__item]:!text-base">
                                         <select
                                             ref={countrySelectDialRef}
-                                            className="w-full rounded-[5px] text-xl md:text-[25px]"
+                                            dir="ltr"
+                                            className={`${inputClasses} w-full rounded-[5px] text-base`}
                                         ></select>
                                     </div>
                                 </div>
