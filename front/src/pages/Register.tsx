@@ -170,6 +170,8 @@ export default function Register_account() {
                     searchEnabled,
                     removeItemButton: true,
                     allowHTML: true,
+                    shouldSort: false,
+
                 });
                 instances.push(instance);
 
